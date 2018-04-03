@@ -20,8 +20,6 @@ public class FuncionarioService {
 
         Funcionario funcionario = findByEmail(email);
 
-
-
         return funcionario;
     }
 
