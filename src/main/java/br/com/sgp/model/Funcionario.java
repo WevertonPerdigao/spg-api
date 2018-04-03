@@ -113,4 +113,141 @@ public class Funcionario implements Serializable {
         this.funcNome = funcNome;
     }
 
+	public Integer getFuncId() {
+		return funcId;
+	}
+
+	public void setFuncId(Integer funcId) {
+		this.funcId = funcId;
+	}
+
+	public Integer getFuncMatricula() {
+		return funcMatricula;
+	}
+
+	public void setFuncMatricula(Integer funcMatricula) {
+		this.funcMatricula = funcMatricula;
+	}
+
+	public String getFuncNome() {
+		return funcNome;
+	}
+
+	public void setFuncNome(String funcNome) {
+		this.funcNome = funcNome;
+	}
+
+	public String getFuncCpf() {
+		return funcCpf;
+	}
+
+	public void setFuncCpf(String funcCpf) {
+		this.funcCpf = funcCpf;
+	}
+
+	public String getFuncEmail() {
+		return funcEmail;
+	}
+
+	public void setFuncEmail(String funcEmail) {
+		this.funcEmail = funcEmail;
+	}
+
+	public String getFuncSenha() {
+		return funcSenha;
+	}
+
+	public void setFuncSenha(String funcSenha) {
+		this.funcSenha = funcSenha;
+	}
+
+	public String getFuncDescricao() {
+		return funcDescricao;
+	}
+
+	public void setFuncDescricao(String funcDescricao) {
+		this.funcDescricao = funcDescricao;
+	}
+
+	public Date getFuncDataAdmissão() {
+		return funcDataAdmissão;
+	}
+
+	public void setFuncDataAdmissão(Date funcDataAdmissão) {
+		this.funcDataAdmissão = funcDataAdmissão;
+	}
+
+	public Boolean getFuncAprovador() {
+		return funcAprovador;
+	}
+
+	public void setFuncAprovador(Boolean funcAprovador) {
+		this.funcAprovador = funcAprovador;
+	}
+
+	public BigDecimal getFuncSalario() {
+		return funcSalario;
+	}
+
+	public void setFuncSalario(BigDecimal funcSalario) {
+		this.funcSalario = funcSalario;
+	}
+
+	public Integer getFuncHorasMes() {
+		return funcHorasMes;
+	}
+
+	public void setFuncHorasMes(Integer funcHorasMes) {
+		this.funcHorasMes = funcHorasMes;
+	}
+
+	public Cargo getFuncCargId() {
+		return funcCargId;
+	}
+
+	public void setFuncCargId(Cargo funcCargId) {
+		this.funcCargId = funcCargId;
+	}
+
+	public Funcao getFuncFuncId() {
+		return funcFuncId;
+	}
+
+	public void setFuncFuncId(Funcao funcFuncId) {
+		this.funcFuncId = funcFuncId;
+	}
+
+	public Setor getFuncSetoId() {
+		return funcSetoId;
+	}
+
+	public void setFuncSetoId(Setor funcSetoId) {
+		this.funcSetoId = funcSetoId;
+	}
+
+	public Perfil getFuncPerfId() {
+		return funcPerfId;
+	}
+
+	public void setFuncPerfId(Perfil funcPerfId) {
+		this.funcPerfId = funcPerfId;
+	}
+
+	public StatusFuncionario getFuncStfuId() {
+		return funcStfuId;
+	}
+
+	public void setFuncStfuId(StatusFuncionario funcStfuId) {
+		this.funcStfuId = funcStfuId;
+	}
+
+	public Unidade getFuncUnidId() {
+		return funcUnidId;
+	}
+
+	public void setFuncUnidId(Unidade funcUnidId) {
+		this.funcUnidId = funcUnidId;
+	}
+    
+
 }

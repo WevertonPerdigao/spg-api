@@ -20,12 +20,7 @@ public class FuncionarioService {
 
         Funcionario funcionario = findByEmail(email);
 
-        //  if (funcionario != null && bCryptPasswordEncoder.matches(senha, funcionario.getFuncSenha())) {
-        //        return funcionario;
-//
-        //    } else {
-        //          return null;
-        //     }
+
 
         return funcionario;
     }
