@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
@@ -31,6 +33,17 @@ public class FuncionarioController {
             return new ResponseEntity("Erro em algo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping
+    public ResponseEntity<?> listAllFuncionarios() {
+        try {
+            List<Funcionario> listFuncionario = funcionarioService.listAll();
+            return ResponseEntity.ok().body(listFuncionario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e);
+        }
+    }
+
 
 
 }

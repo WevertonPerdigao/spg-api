@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FuncionarioService {
 
@@ -18,22 +20,23 @@ public class FuncionarioService {
 
         Funcionario funcionario = findByEmail(email);
 
-     //  if (funcionario != null && bCryptPasswordEncoder.matches(senha, funcionario.getFuncSenha())) {
-    //        return funcionario;
+        //  if (funcionario != null && bCryptPasswordEncoder.matches(senha, funcionario.getFuncSenha())) {
+        //        return funcionario;
 //
-    //    } else {
-  //          return null;
-   //     }
+        //    } else {
+        //          return null;
+        //     }
 
-        return  funcionario;
+        return funcionario;
     }
 
 
     public Funcionario findByEmail(String email) {
         return funcionarioRepository.findByEmail(email);
-
-
     }
 
+    public List<Funcionario> listAll() {
+        return funcionarioRepository.findAll();
+    }
 
 }
