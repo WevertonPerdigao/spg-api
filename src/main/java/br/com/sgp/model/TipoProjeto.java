@@ -1,10 +1,14 @@
 package br.com.sgp.model;
 
-import lombok.Getter;
-import lombok.Setter;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author weverton.perdigao
@@ -14,30 +18,29 @@ import java.io.Serializable;
 public class TipoProjeto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Getter
-    @Setter
+    
+    @NotNull
+    @Id    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tipr_id")
     private Integer tiprId;
 
-    @Getter
-    @Setter
+    
+    @NotNull
     @Basic(optional = false)
     @Column(name = "tipr_nome")
     private String tiprNome;
 
-    public TipoProjeto() {
-    }
+    @JsonBackReference
+    @ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name = "projeto_tipo",// 
+		joinColumns =  //
+				@JoinColumn(name = "prti_tipr_id",referencedColumnName="tipr_id"),// 
+		inverseJoinColumns = {//
+				@JoinColumn(name = "prti_proj_id", referencedColumnName="proj_id"), })//
+    private List<Projeto> projetos;
+    
 
-    public TipoProjeto(Integer tiprId) {
-        this.tiprId = tiprId;
-    }
-
-    public TipoProjeto(Integer tiprId, String tiprNome) {
-        this.tiprId = tiprId;
-        this.tiprNome = tiprNome;
-    }
 
     @Override
     public int hashCode() {
@@ -59,9 +62,37 @@ public class TipoProjeto implements Serializable {
         return true;
     }
 
-    @Override
+    public Integer getTiprId() {
+		return tiprId;
+	}
+
+	public void setTiprId(Integer tiprId) {
+		this.tiprId = tiprId;
+	}
+
+	public String getTiprNome() {
+		return tiprNome;
+	}
+
+	public void setTiprNome(String tiprNome) {
+		this.tiprNome = tiprNome;
+	}
+
+	@Override
     public String toString() {
         return "model.TipoProjeto[ tiprId=" + tiprId + " ]";
     }
+
+	public List<Projeto> getProjetos() {
+		return projetos;
+	}
+
+	public void setProjetos(List<Projeto> projetos) {
+		this.projetos = projetos;
+	}
+    
+    
+
+	
 
 }

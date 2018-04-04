@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 
 /**
@@ -12,44 +18,25 @@ import java.io.Serializable;
 @Entity
 @Table(name = "situacao_projeto")
 public class SituacaoProjeto implements Serializable {
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5706953873463684801L;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Getter
-    @Setter
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sipr_id")
     private Integer siprId;
 
-    @Getter
-    @Setter
     @Basic(optional = false)
     @Column(name = "sipr_nome")
     private String siprNome;
 
-    @Getter
-    @Setter
     @Column(name = "sipr_descricao")
     private String siprDescricao;
-
-        public SituacaoProjeto() {
-    }
-
-    public SituacaoProjeto(Integer siprId) {
-        this.siprId = siprId;
-    }
-
-    public SituacaoProjeto(Integer siprId, String siprNome) {
-        this.siprId = siprId;
-        this.siprNome = siprNome;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (siprId != null ? siprId.hashCode() : 0);
-        return hash;
-    }
+    
 
     @Override
     public boolean equals(Object object) {
@@ -69,4 +56,29 @@ public class SituacaoProjeto implements Serializable {
         return "model.SituacaoProjeto[ siprId=" + siprId + " ]";
     }
 
+	public Integer getSiprId() {
+		return siprId;
+	}
+
+	public void setSiprId(Integer siprId) {
+		this.siprId = siprId;
+	}
+
+	public String getSiprNome() {
+		return siprNome;
+	}
+
+	public void setSiprNome(String siprNome) {
+		this.siprNome = siprNome;
+	}
+
+	public String getSiprDescricao() {
+		return siprDescricao;
+	}
+
+	public void setSiprDescricao(String siprDescricao) {
+		this.siprDescricao = siprDescricao;
+	}
+
+    
 }

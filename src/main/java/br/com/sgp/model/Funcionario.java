@@ -1,7 +1,10 @@
 package br.com.sgp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +24,19 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 @ToString
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Funcionario implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
+    
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6955925785649210441L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "func_id")
-
     private Integer funcId;
 
     @Basic(optional = false)
@@ -47,7 +56,7 @@ public class Funcionario implements Serializable {
     private String funcEmail;
 
 
-    @JsonIgnore
+    @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     @Column(name = "func_senha")
     private String funcSenha;
 

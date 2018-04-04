@@ -4,11 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author weverton.perdigao
@@ -17,47 +24,36 @@ import java.util.Date;
 @Table(name = "projeto")
 public class Projeto implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4580818154009474002L;
+
 	@Id
-	@Getter
-	@Setter
 	@Basic(optional = false)
 	@Column(name = "proj_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer projId;
 
-	@Getter
-	@Setter
 	@Basic(optional = false)
 	@Column(name = "proj_nome")
 	private String projNome;
-
-	@Getter
-	@Setter
 	@Basic(optional = false)
 	@Column(name = "proj_descricao")
 	private String projDescricao;
 
-	@Getter
-	@Setter
 	@Column(name = "proj_data_inicial")
 	@Temporal(TemporalType.DATE)
 	private Date projDataInicial;
 
-	@Getter
-	@Setter
 	@Column(name = "proj_data_final")
 	@Temporal(TemporalType.DATE)
 	private Date projDataFinal;
 
-	@Getter
-	@Setter
 	@Basic(optional = false)
 	@Column(name = "proj_valor")
 	private BigDecimal projValor;
 
-	@Setter
-	@Getter
 	@JoinColumn(name = "proj_empr_id", referencedColumnName = "empr_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Empresa projEmprId;
@@ -66,33 +62,26 @@ public class Projeto implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Funcionario projFuncId;
 
-	@Setter
-	@Getter
 	@JoinColumn(name = "proj_sipr_id", referencedColumnName = "sipr_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private SituacaoProjeto projSiprId;
 
-	@Getter
 	@JoinColumn(name = "proj_tead_id", referencedColumnName = "tead_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TermoAditivo projTeadId;
 
+	@OneToMany(cascade= {CascadeType.DETACH},fetch=FetchType.LAZY)
+	@JoinTable(name = "projeto_tipo",// 
+		joinColumns = { //
+				@JoinColumn(name = "prti_proj_id",referencedColumnName = "proj_id")},// 
+		inverseJoinColumns = {//
+				@JoinColumn(name = "prti_tipr_id",referencedColumnName="tipr_id")})//
+	private List<TipoProjeto> projTipos;
+
 	@Transient
 	private BigDecimal custo;
 
-	
 	public Projeto() {
-	}
-
-	public Projeto(Integer projId) {
-		this.projId = projId;
-	}
-
-	public Projeto(Integer projId, String projNome, String projDescricao, BigDecimal projValor) {
-		this.projId = projId;
-		this.projNome = projNome;
-		this.projDescricao = projDescricao;
-		this.projValor = projValor;
 	}
 
 	@Override
@@ -209,4 +198,15 @@ public class Projeto implements Serializable {
 		this.custo = custo;
 	}
 
+	public List<TipoProjeto> getProjTipos() {
+		return projTipos;
+	}
+
+	public void setProjTipos(List<TipoProjeto> projTipos) {
+		this.projTipos = projTipos;
+	}
+
+
+	
+	
 }

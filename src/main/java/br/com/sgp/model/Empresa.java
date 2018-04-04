@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,8 +18,14 @@ import java.util.Date;
 @Table(name = "empresa")
 public class Empresa implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
+    
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2033879897711187832L;
+	
+	@Id
     @Getter
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,20 +93,7 @@ public class Empresa implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Cidade emprCidaId;
 
-    public Empresa() {
-    }
-
-    public Empresa(Integer emprId) {
-        this.emprId = emprId;
-    }
-
-    public Empresa(Integer emprId, String emprRazaoSocial, String emprNomeFantasia, String emprCnpj, boolean emprStatus) {
-        this.emprId = emprId;
-        this.emprRazaoSocial = emprRazaoSocial;
-        this.emprNomeFantasia = emprNomeFantasia;
-        this.emprCnpj = emprCnpj;
-        this.emprStatus = emprStatus;
-    }
+    
 
     @Override
     public int hashCode() {
@@ -122,5 +119,103 @@ public class Empresa implements Serializable {
     public String toString() {
         return "model.Empresa[ emprId=" + emprId + " ]";
     }
+
+	public Integer getEmprId() {
+		return emprId;
+	}
+
+	public void setEmprId(Integer emprId) {
+		this.emprId = emprId;
+	}
+
+	public String getEmprRazaoSocial() {
+		return emprRazaoSocial;
+	}
+
+	public void setEmprRazaoSocial(String emprRazaoSocial) {
+		this.emprRazaoSocial = emprRazaoSocial;
+	}
+
+	public String getEmprNomeFantasia() {
+		return emprNomeFantasia;
+	}
+
+	public void setEmprNomeFantasia(String emprNomeFantasia) {
+		this.emprNomeFantasia = emprNomeFantasia;
+	}
+
+	public String getEmprCnpj() {
+		return emprCnpj;
+	}
+
+	public void setEmprCnpj(String emprCnpj) {
+		this.emprCnpj = emprCnpj;
+	}
+
+	public Date getEmprDataAbertura() {
+		return emprDataAbertura;
+	}
+
+	public void setEmprDataAbertura(Date emprDataAbertura) {
+		this.emprDataAbertura = emprDataAbertura;
+	}
+
+	public String getEmprNaturezaJuridica() {
+		return emprNaturezaJuridica;
+	}
+
+	public void setEmprNaturezaJuridica(String emprNaturezaJuridica) {
+		this.emprNaturezaJuridica = emprNaturezaJuridica;
+	}
+
+	public String getEmprAtividade() {
+		return emprAtividade;
+	}
+
+	public void setEmprAtividade(String emprAtividade) {
+		this.emprAtividade = emprAtividade;
+	}
+
+	public String getEmprEndereco() {
+		return emprEndereco;
+	}
+
+	public void setEmprEndereco(String emprEndereco) {
+		this.emprEndereco = emprEndereco;
+	}
+
+	public String getEmprTelefone() {
+		return emprTelefone;
+	}
+
+	public void setEmprTelefone(String emprTelefone) {
+		this.emprTelefone = emprTelefone;
+	}
+
+	public String getEmprEmail() {
+		return emprEmail;
+	}
+
+	public void setEmprEmail(String emprEmail) {
+		this.emprEmail = emprEmail;
+	}
+
+	public boolean isEmprStatus() {
+		return emprStatus;
+	}
+
+	public void setEmprStatus(boolean emprStatus) {
+		this.emprStatus = emprStatus;
+	}
+
+	public Cidade getEmprCidaId() {
+		return emprCidaId;
+	}
+
+	public void setEmprCidaId(Cidade emprCidaId) {
+		this.emprCidaId = emprCidaId;
+	}
+    
+    
 
 }

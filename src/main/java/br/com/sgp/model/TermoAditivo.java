@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,6 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "termo_aditivo")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class TermoAditivo implements Serializable {
 
     private static final long serialVersionUID = 1L;
