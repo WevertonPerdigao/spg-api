@@ -78,6 +78,7 @@ public class TermoAditivo implements Serializable {
     @Column(name = "tead_resp_cliente")
     private int teadRespCliente;
 
+    @ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST})
     private Arquivo arquivo;
 
     public TermoAditivo() {

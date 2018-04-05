@@ -1,10 +1,13 @@
 package br.com.sgp.controller;
 
 import br.com.sgp.model.Arquivo;
+import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.service.ProjetoService;
+import br.com.sgp.util.Constants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,8 +40,7 @@ import javax.servlet.annotation.MultipartConfig;
 @RequestMapping("projetos")
 public class ProjetoController {
 
-	private static final String UPLOADED_FOLDER = System.getProperty("user.home") + File.separator + "sgpfile"
-			+ File.separator;
+	
 	@Autowired
 	ProjetoService projetoService;
 
@@ -115,7 +117,7 @@ public class ProjetoController {
 
 	
 	@PostMapping(value ="uploadtermo",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) // //new annotation since 4.3
-	public ResponseEntity<?> singleFileUpload(@RequestHeader String termoid,@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<?> uploudTermo(@RequestHeader String termoid,@RequestParam("file") MultipartFile file) {
 
 		if (file.isEmpty()) {
 			return new ResponseEntity(HttpStatus.GONE);// 410
@@ -123,21 +125,8 @@ public class ProjetoController {
 
 		try {
 
-			Arquivo v = new Arquivo(file);
-			// Get the file and save it somewhere
-			byte[] bytes = file.getBytes();
-			Path path = Paths.get(UPLOADED_FOLDER + v.getPath());
-
-			File fileSystem = path.toFile();
-			if (!fileSystem.getParentFile().exists()) {
-				fileSystem.getParentFile().mkdir();
-			}
-
-			if (fileSystem.createNewFile()) {
-				Files.write(path, bytes);
-			}
-
-			return new ResponseEntity(projetoService.salvarTermoArquivo(termoid,v), HttpStatus.OK);
+			
+			return new ResponseEntity(projetoService.salvarTermoArquivo(termoid,file), HttpStatus.OK);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -145,5 +134,24 @@ public class ProjetoController {
 		}
 
 	}
+	
+	@PostMapping(value = "addmembro/{id}")
+	public ResponseEntity<?> addMembros(@PathVariable("id") Integer id, @RequestBody List<Funcionario> list) {
+
+		try {
+			return new ResponseEntity(projetoService.addMembros(id,list),HttpStatus.OK);	
+		} catch (Exception e) {
+			return new ResponseEntity(e,HttpStatus.BAD_REQUEST);	
+		}		
+		
+	}
+
+	
+	@GetMapping(value = "getmembros/{id}")
+	public @ResponseBody List<Funcionario> getMembros(@PathVariable String id) {
+		
+		return projetoService.getAllMembros(id);
+	}
+
 
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -70,13 +71,19 @@ public class Projeto implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TermoAditivo projTeadId;
 
-	@ManyToMany(cascade= {CascadeType.DETACH},fetch=FetchType.LAZY)
-	@JoinTable(name = "projeto_tipo",// 
-		joinColumns = { //
-				@JoinColumn(name = "prti_proj_id",referencedColumnName = "proj_id")},// 
-		inverseJoinColumns = {//
-				@JoinColumn(name = "prti_tipr_id",referencedColumnName="tipr_id")})//
+	@ManyToMany(cascade = { CascadeType.DETACH }, fetch = FetchType.LAZY)
+	@JoinTable(name = "projeto_tipo", //
+			joinColumns = { //
+					@JoinColumn(name = "prti_proj_id", referencedColumnName = "proj_id") }, //
+			inverseJoinColumns = { //
+					@JoinColumn(name = "prti_tipr_id", referencedColumnName = "tipr_id") }) //
 	private List<TipoProjeto> projTipos;
+
+	@ManyToMany
+	@JoinTable(name = "projeto_equipe",// 
+		joinColumns = {@JoinColumn(name = "preq_proj_id")},
+		inverseJoinColumns= {@JoinColumn(name = "preq_func_id")})
+	private List<Funcionario> equipe;
 
 	@Transient
 	private BigDecimal custo;
@@ -206,7 +213,38 @@ public class Projeto implements Serializable {
 		this.projTipos = projTipos;
 	}
 
+	public List<Funcionario> getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(List<Funcionario> equipe) {
+		this.equipe = equipe;
+	}
 
 	
+	/**
+	 * sincroniza a lista de membros da equipe do projeto
+	 * @param list
+	 */
+	public void addMembro(List<Funcionario> list) {
+		if (equipe==null) {
+			equipe = new ArrayList<>(list);
+		}else {
+			List<Funcionario> userRemovidos = new ArrayList<>();
+			for (Funcionario funcionario : equipe) {
+				if (!list.contains(funcionario)) {
+					userRemovidos.add(funcionario);
+				}
+			}
+			equipe.removeAll(userRemovidos);
+			
+			for (Funcionario funcionario : list) {
+				if (!equipe.contains(funcionario)) {
+					equipe.add(funcionario);
+				}
+			}
+		}
+	}
+
 	
 }
