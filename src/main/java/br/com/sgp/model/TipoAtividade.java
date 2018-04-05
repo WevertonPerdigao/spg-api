@@ -65,4 +65,22 @@ public class TipoAtividade implements Serializable {
         return "model.TipoAtividade[ tiatId=" + tiatId + " ]";
     }
 
+	public Integer getTiatId() {
+		return tiatId;
+	}
+
+	public void setTiatId(Integer tiatId) {
+		this.tiatId = tiatId;
+	}
+
+	public String getTiatNome() {
+		return tiatNome;
+	}
+
+	public void setTiatNome(String tiatNome) {
+		this.tiatNome = tiatNome;
+	}
+    
+    
+
 }

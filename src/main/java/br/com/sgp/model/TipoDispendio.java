@@ -69,4 +69,29 @@ public class TipoDispendio implements Serializable {
         return "model.TipoDispendio[ tidiId=" + tidiId + " ]";
     }
 
+	public Integer getTidiId() {
+		return tidiId;
+	}
+
+	public void setTidiId(Integer tidiId) {
+		this.tidiId = tidiId;
+	}
+
+	public String getTidiNome() {
+		return tidiNome;
+	}
+
+	public void setTidiNome(String tidiNome) {
+		this.tidiNome = tidiNome;
+	}
+
+	public String getTidiDescricao() {
+		return tidiDescricao;
+	}
+
+	public void setTidiDescricao(String tidiDescricao) {
+		this.tidiDescricao = tidiDescricao;
+	}
+
+    
 }

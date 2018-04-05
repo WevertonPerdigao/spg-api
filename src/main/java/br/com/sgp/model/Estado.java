@@ -80,4 +80,53 @@ public class Estado implements Serializable {
         return "model.Estado[ estaId=" + estaId + " ]";
     }
 
+	public Integer getEstaId() {
+		return estaId;
+	}
+
+	public void setEstaId(Integer estaId) {
+		this.estaId = estaId;
+	}
+
+	public String getEstaNome() {
+		return estaNome;
+	}
+
+	public void setEstaNome(String estaNome) {
+		this.estaNome = estaNome;
+	}
+
+	public String getEstaUf() {
+		return estaUf;
+	}
+
+	public void setEstaUf(String estaUf) {
+		this.estaUf = estaUf;
+	}
+
+	public Integer getEstaIbge() {
+		return estaIbge;
+	}
+
+	public void setEstaIbge(Integer estaIbge) {
+		this.estaIbge = estaIbge;
+	}
+
+	public String getEstaDdd() {
+		return estaDdd;
+	}
+
+	public void setEstaDdd(String estaDdd) {
+		this.estaDdd = estaDdd;
+	}
+
+	public Pais getEstaPaisId() {
+		return estaPaisId;
+	}
+
+	public void setEstaPaisId(Pais estaPaisId) {
+		this.estaPaisId = estaPaisId;
+	}
+
+    
 }

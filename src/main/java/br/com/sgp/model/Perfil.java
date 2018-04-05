@@ -85,4 +85,54 @@ public class Perfil implements Serializable {
         return "model.Perfil[ perfId=" + perfId + " ]";
     }
 
+	public Integer getPerfId() {
+		return perfId;
+	}
+
+	public void setPerfId(Integer perfId) {
+		this.perfId = perfId;
+	}
+
+	public String getPerfNome() {
+		return perfNome;
+	}
+
+	public void setPerfNome(String perfNome) {
+		this.perfNome = perfNome;
+	}
+
+	public String getPerfDescricao() {
+		return perfDescricao;
+	}
+
+	public void setPerfDescricao(String perfDescricao) {
+		this.perfDescricao = perfDescricao;
+	}
+
+	public BigDecimal getPerfValorInicial() {
+		return perfValorInicial;
+	}
+
+	public void setPerfValorInicial(BigDecimal perfValorInicial) {
+		this.perfValorInicial = perfValorInicial;
+	}
+
+	public BigDecimal getPerfValorFinal() {
+		return perfValorFinal;
+	}
+
+	public void setPerfValorFinal(BigDecimal perfValorFinal) {
+		this.perfValorFinal = perfValorFinal;
+	}
+
+	public Boolean getPerfAcessoCompleto() {
+		return perfAcessoCompleto;
+	}
+
+	public void setPerfAcessoCompleto(Boolean perfAcessoCompleto) {
+		this.perfAcessoCompleto = perfAcessoCompleto;
+	}
+    
+    
+
 }

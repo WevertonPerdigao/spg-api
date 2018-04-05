@@ -1,7 +1,13 @@
 package br.com.sgp.controller;
 
+import br.com.sgp.model.Cargo;
+import br.com.sgp.model.Funcao;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Login;
+import br.com.sgp.model.Perfil;
+import br.com.sgp.model.Setor;
+import br.com.sgp.model.StatusFuncionario;
+import br.com.sgp.model.Unidade;
 import br.com.sgp.security.PasswordEncoder;
 import br.com.sgp.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +65,55 @@ public class FuncionarioController {
 			return ResponseEntity.badRequest().body(e);
 		}
 	}
+	
+	@PostMapping(value = "salvar")
+	public ResponseEntity<?> postMethodName(@RequestBody Funcionario entity) {
+		try {			
+			funcionarioService.salvar(entity);			
+			return new ResponseEntity<Funcionario>(entity,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);	
+		}		
+	}
+	
+	@GetMapping(value = "setor")
+	public @ResponseBody List<Setor> getAllSetors() {
+		return funcionarioService.getAllSetor();
+	}
+
+	@GetMapping(value = "perfil")
+	public @ResponseBody List<Perfil> getAllPerfil() {
+		return funcionarioService.getAllPerfil();
+	}
+	
+	@GetMapping(value = "funcao")
+	public @ResponseBody List<Funcao> getAllFuncao() {
+		return funcionarioService.getAllFuncao();
+	}
+	
+	@GetMapping(value = "cargo")
+	public @ResponseBody List<Cargo> getAllCargo() {
+		return funcionarioService.getAllCargo();
+	}
+	
+	@GetMapping(value = "unidade")
+	public @ResponseBody List<Unidade> getAllUnicade() {
+		return funcionarioService.getAllUnidade();
+	}
+	
+	@GetMapping(value = "status")
+	public @ResponseBody List<StatusFuncionario> getAllStatus() {
+		return funcionarioService.getallStatus();
+	}
+
+
+
+
+
+	
+	
+
+
 
 }

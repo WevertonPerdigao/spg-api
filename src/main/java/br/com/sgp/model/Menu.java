@@ -65,4 +65,53 @@ public class Menu implements Serializable {
         return "model.Menu[ menuId=" + menuId + " ]";
     }
 
+	public Integer getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
+
+	public String getMenuNome() {
+		return menuNome;
+	}
+
+	public void setMenuNome(String menuNome) {
+		this.menuNome = menuNome;
+	}
+
+	public String getMenuDescricao() {
+		return menuDescricao;
+	}
+
+	public void setMenuDescricao(String menuDescricao) {
+		this.menuDescricao = menuDescricao;
+	}
+
+	public String getMenuUrl() {
+		return menuUrl;
+	}
+
+	public void setMenuUrl(String menuUrl) {
+		this.menuUrl = menuUrl;
+	}
+
+	public int getMenuSequencia() {
+		return menuSequencia;
+	}
+
+	public void setMenuSequencia(int menuSequencia) {
+		this.menuSequencia = menuSequencia;
+	}
+
+	public Menu getMenuPaiId() {
+		return menuPaiId;
+	}
+
+	public void setMenuPaiId(Menu menuPaiId) {
+		this.menuPaiId = menuPaiId;
+	}
+
+    
 }

@@ -41,4 +41,22 @@ public class Unidade implements Serializable {
         this.unidNome = unidNome;
     }
 
+	public Integer getUnidId() {
+		return unidId;
+	}
+
+	public void setUnidId(Integer unidId) {
+		this.unidId = unidId;
+	}
+
+	public String getUnidNome() {
+		return unidNome;
+	}
+
+	public void setUnidNome(String unidNome) {
+		this.unidNome = unidNome;
+	}
+
+    
+    
 }

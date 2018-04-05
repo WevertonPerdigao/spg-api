@@ -59,4 +59,22 @@ public class Cargo implements Serializable {
         return "model.Cargo[ cargId=" + cargId + " ]";
     }
 
+	public Integer getCargId() {
+		return cargId;
+	}
+
+	public void setCargId(Integer cargId) {
+		this.cargId = cargId;
+	}
+
+	public String getCargNome() {
+		return cargNome;
+	}
+
+	public void setCargNome(String cargNome) {
+		this.cargNome = cargNome;
+	}
+    
+    
+
 }

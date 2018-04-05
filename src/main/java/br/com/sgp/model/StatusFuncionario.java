@@ -66,4 +66,21 @@ public class StatusFuncionario implements Serializable {
         return "model.StatusFuncionario[ stfuId=" + stfuId + " ]";
     }
 
+	public Integer getStfuId() {
+		return stfuId;
+	}
+
+	public void setStfuId(Integer stfuId) {
+		this.stfuId = stfuId;
+	}
+
+	public String getStfuNome() {
+		return stfuNome;
+	}
+
+	public void setStfuNome(String stfuNome) {
+		this.stfuNome = stfuNome;
+	}
+
+    
 }

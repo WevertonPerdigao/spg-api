@@ -66,4 +66,21 @@ public class Setor implements Serializable {
         return "model.Setor[ setoId=" + setoId + " ]";
     }
 
+	public Integer getSetoId() {
+		return setoId;
+	}
+
+	public void setSetoId(Integer setoId) {
+		this.setoId = setoId;
+	}
+
+	public String getSetoNome() {
+		return setoNome;
+	}
+
+	public void setSetoNome(String setoNome) {
+		this.setoNome = setoNome;
+	}
+
+    
 }

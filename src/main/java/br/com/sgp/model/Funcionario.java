@@ -11,6 +11,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,9 +21,8 @@ import java.util.Date;
  * @author weverton.perdigao
  */
 @Entity
-@Table(name = "funcionario")
-@Getter
-@Setter
+@Table(name = "funcionario",
+uniqueConstraints = {@UniqueConstraint(columnNames = { "func_email" })})
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -52,7 +53,9 @@ public class Funcionario implements Serializable {
     private String funcCpf;
 
 
-    @Column(name = "func_email")
+    
+    @Email    
+    @Column(name = "func_email",unique=true)
     private String funcEmail;
 
 

@@ -72,4 +72,37 @@ public class Cidade implements Serializable {
         return "model.Cidade[ cidaId=" + cidaId + " ]";
     }
 
+	public Integer getCidaId() {
+		return cidaId;
+	}
+
+	public void setCidaId(Integer cidaId) {
+		this.cidaId = cidaId;
+	}
+
+	public String getCidaNome() {
+		return cidaNome;
+	}
+
+	public void setCidaNome(String cidaNome) {
+		this.cidaNome = cidaNome;
+	}
+
+	public Integer getCidaIbge() {
+		return cidaIbge;
+	}
+
+	public void setCidaIbge(Integer cidaIbge) {
+		this.cidaIbge = cidaIbge;
+	}
+
+	public Estado getCidaEstaId() {
+		return cidaEstaId;
+	}
+
+	public void setCidaEstaId(Estado cidaEstaId) {
+		this.cidaEstaId = cidaEstaId;
+	}
+
+    
 }

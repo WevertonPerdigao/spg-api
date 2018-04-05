@@ -123,4 +123,77 @@ public class TermoAditivo implements Serializable {
         return "model.TermoAditivo[ teadId=" + teadId + " ]";
     }
 
+	public Integer getTeadId() {
+		return teadId;
+	}
+
+	public void setTeadId(Integer teadId) {
+		this.teadId = teadId;
+	}
+
+	public String getTeadNome() {
+		return teadNome;
+	}
+
+	public void setTeadNome(String teadNome) {
+		this.teadNome = teadNome;
+	}
+
+	public String getTeadNumReferencia() {
+		return teadNumReferencia;
+	}
+
+	public void setTeadNumReferencia(String teadNumReferencia) {
+		this.teadNumReferencia = teadNumReferencia;
+	}
+
+	public Date getTeadDataInicial() {
+		return teadDataInicial;
+	}
+
+	public void setTeadDataInicial(Date teadDataInicial) {
+		this.teadDataInicial = teadDataInicial;
+	}
+
+	public Date getTeadDataFinal() {
+		return teadDataFinal;
+	}
+
+	public void setTeadDataFinal(Date teadDataFinal) {
+		this.teadDataFinal = teadDataFinal;
+	}
+
+	public BigDecimal getTeadValor() {
+		return teadValor;
+	}
+
+	public void setTeadValor(BigDecimal teadValor) {
+		this.teadValor = teadValor;
+	}
+
+	public Date getTeadDataRecebimento() {
+		return teadDataRecebimento;
+	}
+
+	public void setTeadDataRecebimento(Date teadDataRecebimento) {
+		this.teadDataRecebimento = teadDataRecebimento;
+	}
+
+	public int getTeadRespEmitente() {
+		return teadRespEmitente;
+	}
+
+	public void setTeadRespEmitente(int teadRespEmitente) {
+		this.teadRespEmitente = teadRespEmitente;
+	}
+
+	public int getTeadRespCliente() {
+		return teadRespCliente;
+	}
+
+	public void setTeadRespCliente(int teadRespCliente) {
+		this.teadRespCliente = teadRespCliente;
+	}
+
+    
 }

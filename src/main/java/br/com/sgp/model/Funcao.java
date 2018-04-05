@@ -64,4 +64,21 @@ public class Funcao implements Serializable {
         return "model.Funcao[ funcId=" + funcId + " ]";
     }
 
+	public Integer getFuncId() {
+		return funcId;
+	}
+
+	public void setFuncId(Integer funcId) {
+		this.funcId = funcId;
+	}
+
+	public String getFuncNome() {
+		return funcNome;
+	}
+
+	public void setFuncNome(String funcNome) {
+		this.funcNome = funcNome;
+	}
+
+    
 }
