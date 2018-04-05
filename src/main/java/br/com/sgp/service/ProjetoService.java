@@ -1,7 +1,9 @@
 package br.com.sgp.service;
 
+import br.com.sgp.model.Arquivo;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
+import br.com.sgp.model.TermoAditivo;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.repository.ProjetoRepository;
 import br.com.sgp.repository.SituacaoProjetoRepository;
@@ -15,6 +17,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -158,5 +162,22 @@ public class ProjetoService {
 		TypedQuery<Projeto> typed = em.createQuery(query);
 		
 		return typed.getResultList();
+	}
+
+	@Transactional
+	public TermoAditivo salvarTermoArquivo(String termoid, Arquivo v) {
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<TermoAditivo> query = builder.createQuery(TermoAditivo.class);
+		Root<TermoAditivo> root = query.from(TermoAditivo.class);
+		query.select(root).distinct(true);
+		query.where(builder.equal(root.get("teadId"), termoid));
+		TypedQuery<TermoAditivo> typed = em.createQuery(query);
+		
+		TermoAditivo entity = typed.getSingleResult();
+		entity.setArquivo(v);//verificar se salva no banco
+		
+		
+		return entity;
 	}
 }

@@ -70,7 +70,7 @@ public class Projeto implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TermoAditivo projTeadId;
 
-	@OneToMany(cascade= {CascadeType.DETACH},fetch=FetchType.LAZY)
+	@ManyToMany(cascade= {CascadeType.DETACH},fetch=FetchType.LAZY)
 	@JoinTable(name = "projeto_tipo",// 
 		joinColumns = { //
 				@JoinColumn(name = "prti_proj_id",referencedColumnName = "proj_id")},// 

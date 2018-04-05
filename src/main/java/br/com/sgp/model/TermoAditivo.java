@@ -78,6 +78,7 @@ public class TermoAditivo implements Serializable {
     @Column(name = "tead_resp_cliente")
     private int teadRespCliente;
 
+    private Arquivo arquivo;
 
     public TermoAditivo() {
     }
@@ -193,6 +194,14 @@ public class TermoAditivo implements Serializable {
 
 	public void setTeadRespCliente(int teadRespCliente) {
 		this.teadRespCliente = teadRespCliente;
+	}
+
+	public Arquivo getArquivo() {
+		return arquivo;
+	}
+
+	public void setArquivo(Arquivo arquivo) {
+		this.arquivo = arquivo;
 	}
 
     
