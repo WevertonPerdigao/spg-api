@@ -1,4 +1,4 @@
-package br.com.sgp;
+package br.com.sgp.config;
 
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.context.annotation.Bean;

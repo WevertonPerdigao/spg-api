@@ -1,8 +1,10 @@
-package br.com.sgp.cors;
+package br.com.sgp.config;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import br.com.sgp.util.Constants;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,7 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
-    private String originPermitida = "http://localhost:8080"; // TODO: Configurar para diferentes ambientes
+    private String originPermitida = "http://localhost:"+Constants.PORTA; // TODO: Configurar para diferentes ambientes
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)

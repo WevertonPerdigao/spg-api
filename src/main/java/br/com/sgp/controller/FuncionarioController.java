@@ -10,6 +10,8 @@ import br.com.sgp.model.StatusFuncionario;
 import br.com.sgp.model.Unidade;
 import br.com.sgp.security.PasswordEncoder;
 import br.com.sgp.service.FuncionarioService;
+import br.com.sgp.util.Constants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:"+Constants.PORTA)
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
 

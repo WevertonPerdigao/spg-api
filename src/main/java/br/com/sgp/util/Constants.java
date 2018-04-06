@@ -6,4 +6,6 @@ public class Constants {
 
 	public static final String UPLOADED_FOLDER = System.getProperty("user.home") + File.separator + "sgpfile"
 			+ File.separator;
+	
+	public static final String PORTA = "4200";
 }

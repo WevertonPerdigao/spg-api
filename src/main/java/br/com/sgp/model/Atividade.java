@@ -53,7 +53,7 @@ public class Atividade implements Serializable{
 	private Date data_final;
 	
 
-	@JsonBackReference
+	
 	@ManyToOne
 	@JoinColumn(name="prat_pai_id")
 	private Atividade atividadePai;
