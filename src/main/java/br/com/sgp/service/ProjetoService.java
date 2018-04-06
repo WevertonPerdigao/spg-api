@@ -1,6 +1,7 @@
 package br.com.sgp.service;
 
 import br.com.sgp.model.Arquivo;
+import br.com.sgp.model.Atividade;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
@@ -14,7 +15,7 @@ import br.com.sgp.util.Constants;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -224,30 +225,42 @@ public class ProjetoService {
 	public Projeto addMembros(Integer id, List<Funcionario> list) {
 		Optional<Projeto> seeker = projetoRepository.findById(id);
 		Projeto projeto = seeker.get();
-		
+
 		projeto.addMembro(list);
-		
+
 		projetoRepository.save(projeto);
-		
+
 		return projeto;
 	}
 
 	public List<Funcionario> getAllMembros(String id) {
-		
+
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Projeto> query = builder.createQuery(Projeto.class);
-		
+
 		Root<Projeto> root = query.from(Projeto.class);
-		
-		root.fetch("equipe",JoinType.LEFT);
-		
+
+		root.fetch("equipe", JoinType.LEFT);
+
 		query.select(root);
-		
-		query.where(builder.equal(root.get("projId"),id ));
-		
-		TypedQuery<Projeto> typedquery = em.createQuery(query);		
-		
+
+		query.where(builder.equal(root.get("projId"), id));
+
+		TypedQuery<Projeto> typedquery = em.createQuery(query);
+
 		return typedquery.getSingleResult().getEquipe();
+	}
+
+	public List<Atividade> getTodasAtividades(Integer id) throws Exception{
+
+		Projeto p = projetoRepository.getOne(id);
+		List<Atividade> list = p.getAtividades();
+		if (p == null || list ==null) {
+			throw new NullPointerException("Nenhum projeto ou atividade encontrada");
+		}
+		
+
+		return list;
 	}
 }

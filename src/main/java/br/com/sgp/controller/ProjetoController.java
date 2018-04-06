@@ -25,15 +25,30 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.annotation.MultipartConfig;
 
 @RestController
@@ -152,6 +167,18 @@ public class ProjetoController {
 		
 		return projetoService.getAllMembros(id);
 	}
+	
+	@GetMapping(value = "atividades/{id}")
+	public ResponseEntity<?> getMethodName(@PathVariable("id") Integer id) {
+		
+		try {
+			return new ResponseEntity(projetoService.getTodasAtividades(id),HttpStatus.OK);
+		} catch (Exception e) {
+		
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
 
-
+	
+	
 }

@@ -44,6 +44,7 @@ public class Funcionario implements Serializable {
     @Column(name = "func_matricula")
     private Integer funcMatricula;
 
+    
     @Basic(optional = false)
     @Column(name = "func_nome")
     private String funcNome;
@@ -53,13 +54,14 @@ public class Funcionario implements Serializable {
     private String funcCpf;
 
 
-    
+    @JsonProperty(required=true)
     @Email    
     @Column(name = "func_email",unique=true)
     private String funcEmail;
 
 
-    @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+        
+    @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY,required=true)
     @Column(name = "func_senha")
     private String funcSenha;
 

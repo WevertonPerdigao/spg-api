@@ -34,8 +34,7 @@ public class Atividade implements Serializable{
 	private String nome;
 	@Column(name="prat_descricao")
 	private String descricao;
-	
-	
+		
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="prat_proj_id")

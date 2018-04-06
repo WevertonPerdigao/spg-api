@@ -85,6 +85,11 @@ public class Projeto implements Serializable {
 		inverseJoinColumns= {@JoinColumn(name = "preq_func_id")})
 	private List<Funcionario> equipe;
 
+	
+	@OneToMany(mappedBy="projeto")
+	private List<Atividade> atividades;
+	
+	
 	@Transient
 	private BigDecimal custo;
 
@@ -246,5 +251,14 @@ public class Projeto implements Serializable {
 		}
 	}
 
+	public List<Atividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(List<Atividade> atividades) {
+		this.atividades = atividades;
+	}
+
+	
 	
 }

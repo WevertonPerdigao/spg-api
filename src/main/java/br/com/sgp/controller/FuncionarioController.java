@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
 
@@ -66,14 +66,18 @@ public class FuncionarioController {
 		}
 	}
 	
+	
 	@PostMapping(value = "salvar")
 	public ResponseEntity<?> postMethodName(@RequestBody Funcionario entity) {
 		try {			
-			funcionarioService.salvar(entity);			
+			funcionarioService.salvar(entity);
+			if (entity.getFuncSenha()==null) {
+				return new ResponseEntity("Não pode salvar senha em branco",HttpStatus.BAD_REQUEST);	
+			}
 			return new ResponseEntity<Funcionario>(entity,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);	
+			return new ResponseEntity("Erro ao salvar",HttpStatus.BAD_REQUEST);	
 		}		
 	}
 	
@@ -106,14 +110,6 @@ public class FuncionarioController {
 	public @ResponseBody List<StatusFuncionario> getAllStatus() {
 		return funcionarioService.getallStatus();
 	}
-
-
-
-
-
-	
-	
-
 
 
 }
