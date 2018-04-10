@@ -39,7 +39,7 @@ public class FuncionarioProvisao implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "fupr_total_geral")
+    @Column(name = "fupr_total_geral",columnDefinition="money")
     private BigDecimal fuprTotalGeral;
 
     @Getter

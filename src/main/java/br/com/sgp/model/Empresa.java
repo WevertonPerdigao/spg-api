@@ -73,7 +73,7 @@ public class Empresa implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "empr_telefone")
+    @Column(name = "empr_telefone",columnDefinition="char",length=10)
     private String emprTelefone;
 
     @Getter

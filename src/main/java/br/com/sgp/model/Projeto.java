@@ -1,11 +1,17 @@
 package br.com.sgp.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import br.com.sgp.util.SqlType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author weverton.perdigao
@@ -28,6 +34,7 @@ public class Projeto implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "proj_nome")
 	private String projNome;
+	
 	@Basic(optional = false)
 	@Column(name = "proj_descricao")
 	private String projDescricao;
@@ -41,7 +48,7 @@ public class Projeto implements Serializable {
 	private Date projDataFinal;
 
 	@Basic(optional = false)
-	@Column(name = "proj_valor")
+	@Column(name = "proj_valor",columnDefinition=SqlType.MONEY)
 	private BigDecimal projValor;
 
 	@JoinColumn(name = "proj_empr_id", referencedColumnName = "empr_id")
@@ -75,9 +82,15 @@ public class Projeto implements Serializable {
 	private List<Funcionario> equipe;
 
 	
+	@JsonBackReference("projeto")
 	@OneToMany(mappedBy="projeto")
 	private List<Atividade> atividades;
 	
+	
+
+	@JsonBackReference("projeto")
+	@OneToMany(mappedBy="projeto")
+	private Set<Dispendio> dispendios;
 	
 	@Transient
 	private BigDecimal custo;
@@ -248,6 +261,15 @@ public class Projeto implements Serializable {
 		this.atividades = atividades;
 	}
 
+	public Set<Dispendio> getDispendios() {
+		return dispendios;
+	}
+
+	public void setDispendios(Set<Dispendio> dispendios) {
+		this.dispendios = dispendios;
+	}
+
+	
 	
 	
 }

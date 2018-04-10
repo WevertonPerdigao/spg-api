@@ -1,13 +1,16 @@
 package br.com.sgp.controller;
 
 import br.com.sgp.model.Arquivo;
+import br.com.sgp.model.Atividade;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.service.ProjetoService;
 import br.com.sgp.util.Constants;
+import io.swagger.models.Response;
 
+import org.hibernate.hql.internal.ast.tree.DisplayableNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,37 +26,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+
+
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
+
 import java.util.List;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.annotation.MultipartConfig;
+
+import javax.websocket.server.PathParam;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:"+Constants.PORTA)
 @RequestMapping("projetos")
 public class ProjetoController {
 
@@ -64,9 +47,8 @@ public class ProjetoController {
 	@GetMapping
 	public ResponseEntity<?> listAllProjetos() {
 
-		try {
-			List<Projeto> listProjeto = projetoService.getTodosProjetos();
-			return ResponseEntity.ok().body(listProjeto);
+		try {			
+			return ResponseEntity.ok().body(projetoService.getTodos());
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e);
 		}
@@ -97,7 +79,7 @@ public class ProjetoController {
 		}
 	}
 
-	@PostMapping(value = "/salvar", consumes = { MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(value = "/salvar", consumes = { 
 			MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<?> salvar(@RequestBody Projeto entity) {
 
@@ -180,6 +162,24 @@ public class ProjetoController {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping(value = "addatividade/{id}")
+	public ResponseEntity<?> addAtividade(@PathParam("id") Integer id, @RequestBody Atividade entity) {
+		
+		try {
+			projetoService.addAtividade(id,entity);
+			return new ResponseEntity<>(entity,HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity("Problema ao salvar",HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+
+
+//	@GetMapping(value = "dispendios")
+//	public @ResponseBody List getMethodName(@RequestParam String param) {
+//		return new SomeData();
+//	}
 
 	
 	

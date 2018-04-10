@@ -7,7 +7,6 @@
 	<groupId>br.com.sgp</groupId>
 	<artifactId>sgp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<name>sgp</name>
 	<description>SGP project for Spring Boot</description>
@@ -105,4 +104,5 @@
 	</build>
 
 
+	<packaging>war</packaging>
 </project>

@@ -1,6 +1,5 @@
 package br.com.sgp.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -16,116 +15,116 @@ import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author weverton.perdigao
  */
 @Entity
-@Table(name = "funcionario",
-uniqueConstraints = {@UniqueConstraint(columnNames = { "func_email" })})
+@Table(name = "funcionario", uniqueConstraints = { @UniqueConstraint(columnNames = { "func_email" }) })
 @EqualsAndHashCode
 @ToString
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Funcionario implements Serializable {
 
-    
-    
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6955925785649210441L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "func_id")
-    private Integer funcId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "func_id")
+	private Integer funcId;
 
-    @Basic(optional = false)
-    @Column(name = "func_matricula")
-    private Integer funcMatricula;
+	@Basic(optional = false)
+	@Column(name = "func_matricula")
+	private Integer funcMatricula;
 
-    
-    @Basic(optional = false)
-    @Column(name = "func_nome")
-    private String funcNome;
+	@Basic(optional = false)
+	@Column(name = "func_nome")
+	private String funcNome;
 
+	@Column(name = "func_cpf")
+	private String funcCpf;
 
-    @Column(name = "func_cpf")
-    private String funcCpf;
+	@JsonProperty(required = true)
+	@Email
+	@Column(name = "func_email", unique = true)
+	private String funcEmail;
 
+	@JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY, required = true)
+	@Column(name = "func_senha")
+	private String funcSenha;
 
-    @JsonProperty(required=true)
-    @Email    
-    @Column(name = "func_email",unique=true)
-    private String funcEmail;
+	@Column(name = "func_descricao")
+	private String funcDescricao;
 
+	@Column(name = "func_data_admissao")
+	@Temporal(TemporalType.DATE)
+	private Date funcDataAdmissão;
 
-        
-    @JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY,required=true)
-    @Column(name = "func_senha")
-    private String funcSenha;
+	@Column(name = "func_aprovador")
+	private Boolean funcAprovador;
 
+	@Column(name = "func_salario",columnDefinition="money")
+	private BigDecimal funcSalario;
 
-    @Column(name = "func_descricao")
-    private String funcDescricao;
+	@Column(name = "func_horas_mes")
+	private Integer funcHorasMes;
 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JoinColumn(name = "func_carg_id", referencedColumnName = "carg_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Cargo funcCargId;
 
-    @Column(name = "func_data_admissao")
-    @Temporal(TemporalType.DATE)
-    private Date funcDataAdmissão;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JoinColumn(name = "func_func_id", referencedColumnName = "func_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Funcao funcFuncId;
 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JoinColumn(name = "func_seto_id", referencedColumnName = "seto_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Setor funcSetoId;
 
-    @Column(name = "func_aprovador")
-    private Boolean funcAprovador;
+	@JoinColumn(name = "func_perf_id", referencedColumnName = "perf_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Perfil funcPerfId;
 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JoinColumn(name = "func_stfu_id", referencedColumnName = "stfu_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private StatusFuncionario funcStfuId;
 
-    @Column(name = "func_salario")
-    private BigDecimal funcSalario;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JoinColumn(name = "func_unid_id", referencedColumnName = "unid_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Unidade funcUnidId;
 
-    @Column(name = "func_horas_mes")
-    private Integer funcHorasMes;
+//	@ManyToMany(targetEntity = DispendioTreinamento.class,fetch = FetchType.LAZY)
+////	@JoinTable(name = "projeto_dispendio_treinamento_participante", joinColumns = {
+////			@JoinColumn(name = "participantes_func_id", referencedColumnName = "func_id", table = "Funcionario") },//
+////			inverseJoinColumns = {
+////					@JoinColumn(name = "prdt_id", referencedColumnName = "participantes_prdt_id") }
+////	//
+////	)
+//
+//	private Set<DispendioTreinamento> treinamentos;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "func_carg_id", referencedColumnName = "carg_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Cargo funcCargId;
+	public Funcionario() {
+	}
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "func_func_id", referencedColumnName = "func_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Funcao funcFuncId;
+	public Funcionario(Integer funcId) {
+		this.funcId = funcId;
+	}
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "func_seto_id", referencedColumnName = "seto_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Setor funcSetoId;
-
-    @JoinColumn(name = "func_perf_id", referencedColumnName = "perf_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Perfil funcPerfId;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "func_stfu_id", referencedColumnName = "stfu_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private StatusFuncionario funcStfuId;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "func_unid_id", referencedColumnName = "unid_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Unidade funcUnidId;
-
-    public Funcionario() {
-    }
-
-    public Funcionario(Integer funcId) {
-        this.funcId = funcId;
-    }
-
-    public Funcionario(Integer funcId, int funcMatricula, String funcNome) {
-        this.funcId = funcId;
-        this.funcMatricula = funcMatricula;
-        this.funcNome = funcNome;
-    }
+	public Funcionario(Integer funcId, int funcMatricula, String funcNome) {
+		this.funcId = funcId;
+		this.funcMatricula = funcMatricula;
+		this.funcNome = funcNome;
+	}
 
 	public Integer getFuncId() {
 		return funcId;
@@ -262,6 +261,14 @@ public class Funcionario implements Serializable {
 	public void setFuncUnidId(Unidade funcUnidId) {
 		this.funcUnidId = funcUnidId;
 	}
-    
 
+//	public Set<DispendioTreinamento> getTreinamentos() {
+//		return treinamentos;
+//	}
+//
+//	public void setTreinamentos(Set<DispendioTreinamento> treinamentos) {
+//		this.treinamentos = treinamentos;
+//	}
+
+	
 }

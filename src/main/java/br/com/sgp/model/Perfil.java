@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import br.com.sgp.util.SqlType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -35,12 +38,12 @@ public class Perfil implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "perf_valor_inicial")
+    @Column(name = "perf_valor_inicial", columnDefinition = SqlType.MONEY)
     private BigDecimal perfValorInicial;
 
     @Getter
     @Setter
-    @Column(name = "perf_valor_final")
+    @Column(name = "perf_valor_final",columnDefinition=SqlType.MONEY)
     private BigDecimal perfValorFinal;
 
     @Getter

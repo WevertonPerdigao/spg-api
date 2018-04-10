@@ -2,7 +2,9 @@ package br.com.sgp.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="projeto_atividade")
@@ -34,8 +38,9 @@ public class Atividade implements Serializable{
 	private String nome;
 	@Column(name="prat_descricao")
 	private String descricao;
-		
-	@JsonBackReference
+	
+	
+	
 	@ManyToOne
 	@JoinColumn(name="prat_proj_id")
 	private Projeto projeto;
@@ -54,9 +59,15 @@ public class Atividade implements Serializable{
 	
 
 	
-	@ManyToOne
-	@JoinColumn(name="prat_pai_id")
+	
+	@ManyToOne(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="prat_pai_id",referencedColumnName="prat_id")
 	private Atividade atividadePai;
+	
+	@JsonBackReference("atividadePai")
+	@OneToMany(mappedBy="atividadePai")
+	private Set<Atividade> atividades;
+	
 	
 	@Column(name="prat_ordem_atividade")
 	private Integer ordem;
@@ -143,6 +154,15 @@ public class Atividade implements Serializable{
 	public void setDependente(boolean dependente) {
 		this.dependente = dependente;
 	}
+
+	public Set<Atividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(Set<Atividade> atividades) {
+		this.atividades = atividades;
+	}
 	
+
 	
 }

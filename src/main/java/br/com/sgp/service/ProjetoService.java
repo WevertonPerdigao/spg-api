@@ -8,21 +8,16 @@ import br.com.sgp.model.SituacaoProjeto;
 import br.com.sgp.model.TermoAditivo;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.repository.ArquivoRepository;
+import br.com.sgp.repository.AtividadeRepository;
 import br.com.sgp.repository.ProjetoRepository;
 import br.com.sgp.repository.SituacaoProjetoRepository;
 import br.com.sgp.repository.TipoProjetoRepository;
 import br.com.sgp.util.Constants;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -49,7 +44,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 
 @Service
 public class ProjetoService {
@@ -66,11 +60,24 @@ public class ProjetoService {
 	@Autowired
 	ArquivoRepository arquivoRepository;
 
+	
+	@Autowired
+	AtividadeRepository atividadeRepository;
+	
 	@PersistenceContext
 	private EntityManager em;
 
-	public Projeto findByProjId(Integer projId) {
-		return projetoRepository.getOne(projId);
+	public Projeto findByProjId(Integer projId) {		
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Projeto> query = builder.createQuery(Projeto.class);
+		Root<Projeto> root = query.from(Projeto.class);
+		root.fetch("atividades",JoinType.LEFT);
+		
+		query.distinct(true).select(root).where(builder.equal(root.get("projId"), projId));		
+		TypedQuery<Projeto> typed = em.createQuery(query);
+		
+		return typed.getSingleResult();
 	}
 
 	public synchronized List<Projeto> listByFuncionarioId(Integer funcId) {
@@ -84,6 +91,18 @@ public class ProjetoService {
 		return list;
 	}
 
+	
+	
+	public List<Projeto> getTodos(){
+		List<Projeto> list = projetoRepository.findAll();
+
+		for (Projeto projeto : list) {
+			projeto.setCusto(getCusto(projeto));
+		}
+
+		return list;		
+	}
+	
 	/**
 	 * Metodo para pegar o custo do projeto
 	 */
@@ -262,5 +281,11 @@ public class ProjetoService {
 		
 
 		return list;
+	}
+
+	public void addAtividade(Integer id, Atividade entity) {
+		Projeto p = projetoRepository.getOne(id);
+		entity.setProjeto(p);
+		atividadeRepository.save(entity);
 	}
 }

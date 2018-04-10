@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.com.sgp.util.SqlType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -56,7 +58,7 @@ public class TermoAditivo implements Serializable {
     @Getter
     @Setter
     @Basic(optional = false)
-    @Column(name = "tead_valor")
+    @Column(name = "tead_valor",columnDefinition=SqlType.MONEY)
     private BigDecimal teadValor;
 
     @Getter

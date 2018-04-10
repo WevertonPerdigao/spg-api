@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sgp.util.Constants;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:"+Constants.PORTA)
+
 public class HomeController {
 
     @RequestMapping("/")
