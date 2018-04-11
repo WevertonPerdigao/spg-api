@@ -52,11 +52,11 @@ public class Dispendio implements Serializable {
 	@Column(name = "prdi_justificativa")
 	private String justificativa;
 
-	@JsonProperty(required=true,value="nota_fiscal")
+	@JsonProperty(required=true,value="prdi_cnpj")
 	@Column(name = "prdi_cnpj")
 	private String cnpj;
 
-	@JsonProperty(required=true,value="data_nota_fiscal")
+	@JsonProperty(required=true,value="prdi_data_nota_fiscal")
 	@Column(name = "prdi_data_nota_fiscal")
 	@Temporal(TemporalType.DATE)
 	private Date data_nota_fiscal;
@@ -185,7 +185,6 @@ public class Dispendio implements Serializable {
 		this.tipo = tipo;
 	}
 
-	
 	
 
 }

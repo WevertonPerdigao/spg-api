@@ -3,6 +3,7 @@ package br.com.sgp.service;
 import br.com.sgp.model.Arquivo;
 import br.com.sgp.model.Atividade;
 import br.com.sgp.model.Dispendio;
+import br.com.sgp.model.DispendioAnexo;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
@@ -11,6 +12,7 @@ import br.com.sgp.model.TipoDispendio;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.repository.ArquivoRepository;
 import br.com.sgp.repository.AtividadeRepository;
+import br.com.sgp.repository.DispendioAnexoRepository;
 import br.com.sgp.repository.DispendioRepository;
 import br.com.sgp.repository.ProjetoRepository;
 import br.com.sgp.repository.SituacaoProjetoRepository;
@@ -25,6 +27,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,10 +77,13 @@ public class ProjetoService {
 
 	@Autowired
 	TipoDispendioRepository tipoDispendioRepository;
-	
+
 	@Autowired
 	DispendioRepository dispendioRepository;
 
+	@Autowired
+	DispendioAnexoRepository dispendioAnexoRepository;
+	
 	@PersistenceContext
 	private EntityManager em;
 
@@ -86,7 +93,6 @@ public class ProjetoService {
 		CriteriaQuery<Projeto> query = builder.createQuery(Projeto.class);
 		Root<Projeto> root = query.from(Projeto.class);
 		root.fetch("atividades", JoinType.LEFT);
-		
 
 		query.distinct(true).select(root).where(builder.equal(root.get("projId"), projId));
 		TypedQuery<Projeto> typed = em.createQuery(query);
@@ -214,19 +220,8 @@ public class ProjetoService {
 	@Transactional
 	public TermoAditivo salvarTermoArquivo(String termoid, MultipartFile file) throws IOException {
 
-		Arquivo v = new Arquivo(file);
-		// Get the file and save it somewhere
-		byte[] bytes = file.getBytes();
-		java.nio.file.Path path = Paths.get(Constants.UPLOADED_FOLDER + v.getPath());
+		Arquivo v = getArquivo(Constants.getFolderAnexoTermo(), file);
 
-		File fileSystem = path.toFile();
-		if (!fileSystem.getParentFile().exists()) {
-			fileSystem.getParentFile().mkdir();
-		}
-
-		if (fileSystem.createNewFile()) {
-			Files.write(path, bytes);
-		}
 
 		arquivoRepository.save(v);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -295,7 +290,7 @@ public class ProjetoService {
 	}
 
 	public void addAtividade(Atividade entity) {
-		
+
 		atividadeRepository.save(entity);
 	}
 
@@ -305,28 +300,26 @@ public class ProjetoService {
 
 	public List<Map<String, ?>> getAllTipoDispendioResumo(Integer projetoId) {
 
-		
 		List<Map<String, ?>> list = new ArrayList<>();
-	
-		
+
 		Projeto p = projetoRepository.getOne(projetoId);
-		
+
 		List<TipoDispendio> tipos = p.tiposDispendios();
-		
+
 		for (TipoDispendio tipoDispendio : tipos) {
-			
+
 			Map<String, Object> map = new HashMap<>();
 			float sum = 0;
 
 			for (Dispendio d : p.getDispendios()) {
 				if (d.getTipo().getTidiId().equals(tipoDispendio.getTidiId())) {
-					sum+=d.getValor().floatValue();
+					sum += d.getValor().floatValue();
 				}
 			}
-			
+
 			map.put("tidiId", tipoDispendio.getTidiId());
 			map.put("tidiNome", tipoDispendio.getTidiNome());
-			map.put("total", ""+sum);
+			map.put("total", "" + sum);
 			list.add(map);
 
 		}
@@ -334,31 +327,67 @@ public class ProjetoService {
 		return list;
 	}
 
-
 	public List<Dispendio> getDispencios(Integer projetctId, Integer tipo) {
-		
+
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Dispendio> query = builder.createQuery(Dispendio.class);
-		
+
 		Root<Dispendio> root = query.from(Dispendio.class);
 		query.select(root);
-		
-		query.distinct(true).where(builder.equal(root.get("prdi_proj_id").get("projId"),projetctId),builder.equal(root.get("tipo").get("tidiId"), tipo));
-		
-		TypedQuery<Dispendio> typed = em.createQuery(query);		
-		
+
+		query.distinct(true).where(builder.equal(root.get("prdi_proj_id").get("projId"), projetctId),
+				builder.equal(root.get("tipo").get("tidiId"), tipo));
+
+		TypedQuery<Dispendio> typed = em.createQuery(query);
+
 		return typed.getResultList();
 	}
 
 	public Set<Dispendio> getDispencios(Integer projetctId) {
 
 		Projeto p = projetoRepository.getOne(projetctId);
-		
+
 		return p.getDispendios();
 	}
 
-	public void addDispendio(Dispendio entity) {		
-		dispendioRepository.save(entity);		
+	public void addDispendio(Dispendio entity) {
+		dispendioRepository.save(entity);
+	}
+
+	@Transactional
+	public void addAnexoDispendio(Integer id, MultipartFile file) {
+		try {
+			Arquivo arquivo = getArquivo(Constants.getFolderAnexoDispendio(), file);
+			DispendioAnexo anexo = dispendioRepository.getAnexo(id);			
+			anexo.setAnexo(arquivo);
+//			dispendioRepository.save(anexo)			
+			
+		} catch (IOException e) {		
+			e.printStackTrace();
+		}
+	}
+
+	public Arquivo getArquivo(String caminho, MultipartFile file) throws IOException {
+		Arquivo v = new Arquivo(file);
+		// Get the file and save it somewhere
+		byte[] bytes = file.getBytes();
+		java.nio.file.Path path = Paths.get(caminho + v.getPath());
+
+		File fileSystem = path.toFile();
+		if (!fileSystem.getParentFile().exists()) {
+			fileSystem.getParentFile().mkdir();
+		}
+
+		if (fileSystem.createNewFile()) {
+			Files.write(path, bytes);
+			return v;
+		} else
+			return null;
+
+	}
+
+	public void addDispendioAnexo(DispendioAnexo entity) {
+		dispendioAnexoRepository.save(entity);
 	}
 }

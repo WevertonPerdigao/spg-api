@@ -3,6 +3,7 @@ package br.com.sgp.controller;
 import br.com.sgp.model.Arquivo;
 import br.com.sgp.model.Atividade;
 import br.com.sgp.model.Dispendio;
+import br.com.sgp.model.DispendioAnexo;
 import br.com.sgp.model.DispendioTreinamento;
 import br.com.sgp.model.DispendioViagem;
 import br.com.sgp.model.Funcionario;
@@ -224,6 +225,7 @@ public class ProjetoController {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 	@PostMapping(value = "adddispendio/viagem")
 	public ResponseEntity<?> addDispendio(@RequestBody DispendioViagem entity) {		
 		try {
@@ -233,6 +235,28 @@ public class ProjetoController {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}		
 		
+	}
+
+
+	
+	@PostMapping(value = "dispendio/addanexo")
+	public @ResponseBody DispendioAnexo postMethodName(@RequestBody DispendioAnexo entity) {
+		
+		projetoService.addDispendioAnexo(entity);
+		
+		return entity;
+	}
+
+	@PostMapping(value = "addanexodispendio/{id}",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<?> addAnexoDispendio(@PathVariable("id") Integer id,@RequestParam("file") MultipartFile file) {
+		
+		try {
+			projetoService.addAnexoDispendio(id,file);	
+		}catch (Exception e) {
+			
+		}		
+		
+		return null;
 	}
 
 
