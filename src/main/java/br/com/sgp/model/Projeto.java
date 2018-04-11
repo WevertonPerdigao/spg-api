@@ -3,6 +3,7 @@ package br.com.sgp.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.sgp.util.SqlType;
 
@@ -84,7 +85,8 @@ public class Projeto implements Serializable {
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
 	private List<Atividade> atividades;
 
-	@OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
+	@JsonProperty("projeto_dispendios")
+	@OneToMany(mappedBy = "prdi_proj_id", fetch = FetchType.LAZY)
 	// @JoinTable(name="projeto_dispendio",joinColumns = {@JoinColumn()})
 	private Set<Dispendio> dispendios;
 
@@ -262,13 +264,7 @@ public class Projeto implements Serializable {
 		this.atividades = atividades;
 	}
 
-	public Set<Dispendio> getDispendios() {
-		return dispendios;
-	}
 
-	public void setDispendios(Set<Dispendio> dispendios) {
-		this.dispendios = dispendios;
-	}
 
 	/**
 	 * Metodo para pegar todos tipos de dispendios dos dispendios do projeto
@@ -288,4 +284,15 @@ public class Projeto implements Serializable {
 		return list;
 	}
 
+	public Set<Dispendio> getDispendios() {
+		return dispendios;
+	}
+
+	public void setDispendios(Set<Dispendio> dispendios) {
+		this.dispendios = dispendios;
+	}
+
+
+
+	
 }

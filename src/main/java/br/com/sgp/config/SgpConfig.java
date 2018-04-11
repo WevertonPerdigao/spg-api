@@ -6,6 +6,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.fasterxml.jackson.core.JsonFactory;import com.fasterxml.jackson.core.JsonFactory.Feature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -22,6 +26,7 @@ public class SgpConfig {
 		config.setAllowCredentials(true);
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
+		
 //		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
 		config.addAllowedMethod("POST");
@@ -41,4 +46,14 @@ public class SgpConfig {
 				.build();
 
 	}
+	
+	
+//	@Bean
+//	public ObjectMapper objectMapper() {
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+//		
+//		
+//		return mapper;
+//	}
 }

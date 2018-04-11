@@ -54,19 +54,7 @@ public class Cidade implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cidade)) {
-            return false;
-        }
-        Cidade other = (Cidade) object;
-        if ((this.cidaId == null && other.cidaId != null) || (this.cidaId != null && !this.cidaId.equals(other.cidaId))) {
-            return false;
-        }
-        return true;
-    }
-
+   
     @Override
     public String toString() {
         return "model.Cidade[ cidaId=" + cidaId + " ]";

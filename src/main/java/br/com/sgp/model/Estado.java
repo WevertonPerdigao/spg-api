@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -42,6 +45,7 @@ public class Estado implements Serializable {
     @Column(name = "esta_ddd")
     private String estaDdd;
 
+    @JsonIgnore
     @Getter
     @Setter
     @JoinColumn(name = "esta_pais_id", referencedColumnName = "pais_id")

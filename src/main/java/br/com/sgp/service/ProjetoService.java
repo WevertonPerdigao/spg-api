@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -318,7 +320,7 @@ public class ProjetoService {
 
 			for (Dispendio d : p.getDispendios()) {
 				if (d.getTipo().getTidiId().equals(tipoDispendio.getTidiId())) {
-					sum+=d.getValor().floatValue();
+					sum+=d.getPrdi_valor().floatValue();
 				}
 			}
 			
@@ -332,6 +334,7 @@ public class ProjetoService {
 		return list;
 	}
 
+
 	public List<Dispendio> getDispencios(Integer projetctId, Integer tipo) {
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -341,7 +344,7 @@ public class ProjetoService {
 		Root<Dispendio> root = query.from(Dispendio.class);
 		query.select(root);
 		
-		query.distinct(true).where(builder.equal(root.get("projeto").get("projId"),projetctId),builder.equal(root.get("tipo").get("tidiId"), tipo));
+		query.distinct(true).where(builder.equal(root.get("prdi_proj_id").get("projId"),projetctId),builder.equal(root.get("tipo").get("tidiId"), tipo));
 		
 		TypedQuery<Dispendio> typed = em.createQuery(query);		
 		

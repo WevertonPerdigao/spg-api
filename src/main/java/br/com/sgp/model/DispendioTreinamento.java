@@ -23,31 +23,37 @@ public class DispendioTreinamento extends Dispendio implements Serializable {
 	 */
 	private static final long serialVersionUID = 6946366741648890204L;
 
-	@JsonProperty(required = true)
+	@JsonProperty(required = true,value="prdt_ementa")
 	@Basic(optional = false)
+	
 	@Column(name = "prdt_ementa")
 	private String ementa;
 
-	@JsonProperty(required = true)
+	@JsonProperty(required = true,value="prdt_data_inicial")
 	@Basic(optional = false)
 	@Column(name = "prdt_data_inicial")
 	@Temporal(TemporalType.DATE)
 	private Date dataInicio;
 
+	
+	@JsonProperty(required = false,value="prdt_data_final")
 	@Column(name = "prdt_data_final")
 	@Temporal(TemporalType.DATE)
 	private Date dataFinal;
 
+	@JsonProperty(required = false,value="prdt_instrutor")
 	@Column(name = "prdt_instrutor")
 	private String instrutor;
 
 	
+	@JsonProperty(value="projeto_dispendio_treinamento_participante")
 	@OneToMany(cascade = CascadeType.DETACH)
 	@JoinTable(name = "projeto_dispendio_treinamento_participante", joinColumns = {
 			@JoinColumn(name = "participantes_prdt_id", referencedColumnName = "prdi_id") }, //
 			inverseJoinColumns = { @JoinColumn(name = "participantes_func_id", referencedColumnName = "func_id") })
 	private Set<Funcionario> participantes;
 
+	
 	public DispendioTreinamento() {
 	}
 
