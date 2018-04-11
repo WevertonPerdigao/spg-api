@@ -24,11 +24,10 @@ public class DispendioTreinamento extends Dispendio implements Serializable {
 	private static final long serialVersionUID = 6946366741648890204L;
 
 	@JsonProperty(required = true,value="prdt_ementa")
-	@Basic(optional = false)
-	
+	@Basic(optional = false)	
 	@Column(name = "prdt_ementa")
 	private String ementa;
-
+	
 	@JsonProperty(required = true,value="prdt_data_inicial")
 	@Basic(optional = false)
 	@Column(name = "prdt_data_inicial")

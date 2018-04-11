@@ -34,104 +34,106 @@ public class Dispendio implements Serializable {
 	@Id
 	@Column(name="prdi_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer prdi_id;
+	@JsonProperty("prdi_id")
+	private Integer id;
 	
-	
+	@JsonProperty("prdi_titulo_fatura")
 	@Basic(optional = false)
 	@Column(name = "prdi_titulo_fatura")
-	private String prdi_titulo_fatura;
+	private String titulo_fatura;
 
+	@JsonProperty(required=true,value="prdi_descricao")	
 	@Column(name = "prdi_descricao")
-	private String prdi_descricao;
+	private String descricao;
 
 	
-	@JsonProperty(required=true)
+	@JsonProperty(required=true,value="prdi_justificativa")
 	@Basic(optional = false)
 	@Column(name = "prdi_justificativa")
-	private String prdi_justificativa;
+	private String justificativa;
 
+	@JsonProperty(required=true,value="nota_fiscal")
 	@Column(name = "prdi_cnpj")
-	private String prdi_cnpj;
+	private String cnpj;
 
-	
+	@JsonProperty(required=true,value="data_nota_fiscal")
 	@Column(name = "prdi_data_nota_fiscal")
 	@Temporal(TemporalType.DATE)
-	private Date prdi_data_nota_fiscal;
+	private Date data_nota_fiscal;
 
+	@JsonProperty(required=true,value="prdi_nota_fiscal")
 	@Column(name = "prdi_nota_fiscal")
 	private String prdi_nota_fiscal;
 
-	
+	@JsonProperty(required=true,value="prdi_data_pagamento")
 	@Column(name = "prdi_data_pagamento")
 	@Temporal(TemporalType.DATE)
-	private Date prdi_data_pagamento;
+	private Date data_pagamento;
 
-	@JsonProperty(required=true)
+	@JsonProperty(required=true,value="prdi_valor")
 	@Basic(optional = false)
 	@Column(name = "prdi_valor",columnDefinition=SqlType.MONEY)
-	private BigDecimal prdi_valor;
+	private BigDecimal valor;
 	
 	@ManyToOne
 	private DispendioAnexo anexo;
 	
-	
-	
 	@JsonProperty(required=true,access=Access.WRITE_ONLY,value="prdi_proj_id")	
 	@JoinColumn(name = "prdi_proj_id", referencedColumnName = "proj_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private Projeto prdi_proj_id;
+	private Projeto projeto;
 
 	@JsonProperty(required=true, value="prdi_tidi_id")
 	@JoinColumn(name = "prdi_tidi_id", referencedColumnName = "tidi_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoDispendio tipo;
 
-	public Integer getPrdi_id() {
-		return prdi_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setPrdi_id(Integer prdi_id) {
-		this.prdi_id = prdi_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getPrdi_titulo_fatura() {
-		return prdi_titulo_fatura;
+	public String getTitulo_fatura() {
+		return titulo_fatura;
 	}
 
-	public void setPrdi_titulo_fatura(String prdi_titulo_fatura) {
-		this.prdi_titulo_fatura = prdi_titulo_fatura;
+	public void setTitulo_fatura(String titulo_fatura) {
+		this.titulo_fatura = titulo_fatura;
 	}
 
-	public String getPrdi_descricao() {
-		return prdi_descricao;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setPrdi_descricao(String prdi_descricao) {
-		this.prdi_descricao = prdi_descricao;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public String getPrdi_justificativa() {
-		return prdi_justificativa;
+	public String getJustificativa() {
+		return justificativa;
 	}
 
-	public void setPrdi_justificativa(String prdi_justificativa) {
-		this.prdi_justificativa = prdi_justificativa;
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
 	}
 
-	public String getPrdi_cnpj() {
-		return prdi_cnpj;
+	public String getCnpj() {
+		return cnpj;
 	}
 
-	public void setPrdi_cnpj(String prdi_cnpj) {
-		this.prdi_cnpj = prdi_cnpj;
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
-	public Date getPrdi_data_nota_fiscal() {
-		return prdi_data_nota_fiscal;
+	public Date getData_nota_fiscal() {
+		return data_nota_fiscal;
 	}
 
-	public void setPrdi_data_nota_fiscal(Date prdi_data_nota_fiscal) {
-		this.prdi_data_nota_fiscal = prdi_data_nota_fiscal;
+	public void setData_nota_fiscal(Date data_nota_fiscal) {
+		this.data_nota_fiscal = data_nota_fiscal;
 	}
 
 	public String getPrdi_nota_fiscal() {
@@ -142,20 +144,20 @@ public class Dispendio implements Serializable {
 		this.prdi_nota_fiscal = prdi_nota_fiscal;
 	}
 
-	public Date getPrdi_data_pagamento() {
-		return prdi_data_pagamento;
+	public Date getData_pagamento() {
+		return data_pagamento;
 	}
 
-	public void setPrdi_data_pagamento(Date prdi_data_pagamento) {
-		this.prdi_data_pagamento = prdi_data_pagamento;
+	public void setData_pagamento(Date data_pagamento) {
+		this.data_pagamento = data_pagamento;
 	}
 
-	public BigDecimal getPrdi_valor() {
-		return prdi_valor;
+	public BigDecimal getValor() {
+		return valor;
 	}
 
-	public void setPrdi_valor(BigDecimal prdi_valor) {
-		this.prdi_valor = prdi_valor;
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 	public DispendioAnexo getAnexo() {
@@ -166,12 +168,13 @@ public class Dispendio implements Serializable {
 		this.anexo = anexo;
 	}
 
-	public Projeto getPrdi_proj_id() {
-		return prdi_proj_id;
+
+	public Projeto getProjeto() {
+		return projeto;
 	}
 
-	public void setPrdi_proj_id(Projeto prdi_proj_id) {
-		this.prdi_proj_id = prdi_proj_id;
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
 	}
 
 	public TipoDispendio getTipo() {
@@ -182,7 +185,7 @@ public class Dispendio implements Serializable {
 		this.tipo = tipo;
 	}
 
-
+	
 	
 
 }

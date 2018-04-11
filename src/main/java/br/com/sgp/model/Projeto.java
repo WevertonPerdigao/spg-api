@@ -86,7 +86,7 @@ public class Projeto implements Serializable {
 	private List<Atividade> atividades;
 
 	@JsonProperty("projeto_dispendios")
-	@OneToMany(mappedBy = "prdi_proj_id", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
 	// @JoinTable(name="projeto_dispendio",joinColumns = {@JoinColumn()})
 	private Set<Dispendio> dispendios;
 

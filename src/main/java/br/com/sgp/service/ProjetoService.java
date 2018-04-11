@@ -320,7 +320,7 @@ public class ProjetoService {
 
 			for (Dispendio d : p.getDispendios()) {
 				if (d.getTipo().getTidiId().equals(tipoDispendio.getTidiId())) {
-					sum+=d.getPrdi_valor().floatValue();
+					sum+=d.getValor().floatValue();
 				}
 			}
 			
