@@ -23,5 +23,9 @@ public interface ProjetoRepository extends JpaRepository<Projeto,Integer> {
     List<Projeto> getTodosProjetos();
 
 
+    @Query("SELECT p FROM Projeto as p join fetch p.projFuncId join fetch p.projSiprId")
+	List<Projeto> getTodos();
+
+
 	
 }

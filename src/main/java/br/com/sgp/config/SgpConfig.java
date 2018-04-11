@@ -6,9 +6,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.fasterxml.jackson.core.JsonFactory;import com.fasterxml.jackson.core.JsonFactory.Feature;
+
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module.Feature;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -26,12 +29,12 @@ public class SgpConfig {
 		config.setAllowCredentials(true);
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
-		
-//		config.addAllowedMethod("OPTIONS");
+
+		// config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
 		config.addAllowedMethod("POST");
-//		config.addAllowedMethod("PUT");
-//		config.addAllowedMethod("DELETE");
+		// config.addAllowedMethod("PUT");
+		// config.addAllowedMethod("DELETE");
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
@@ -46,14 +49,24 @@ public class SgpConfig {
 				.build();
 
 	}
-	
-	
+
 //	@Bean
 //	public ObjectMapper objectMapper() {
 //		ObjectMapper mapper = new ObjectMapper();
 //		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-//		
-//		
+//
 //		return mapper;
 //	}
+
+	@Bean
+	public Module datatypeHibernateModule() {
+
+		Hibernate5Module module = new Hibernate5Module();
+		module.enable(
+				Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS);
+		module.disable(Feature.FORCE_LAZY_LOADING);
+		module.disable(Feature.USE_TRANSIENT_ANNOTATION);
+		
+		return module;
+	}
 }

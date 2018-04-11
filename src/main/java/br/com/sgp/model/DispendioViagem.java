@@ -28,7 +28,7 @@ public class DispendioViagem extends Dispendio implements Serializable {
 	private Character prdv_tipo_viagem;
 
 	@Basic(optional = false)
-	@JsonProperty("prdv_data_saida")
+	@JsonProperty(value="prdv_data_saida",required=true)
 	@Column(name = "prdv_data_saida")
 	@Temporal(TemporalType.DATE)
 	private Date data_saida;
@@ -87,7 +87,96 @@ public class DispendioViagem extends Dispendio implements Serializable {
 	@Setter
 	@JsonProperty("prdv_func_id")
 	@JoinColumn(name = "prdv_func_id", referencedColumnName = "func_id")
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	private Funcionario funcionario;
 
+	public Character getPrdv_tipo_viagem() {
+		return prdv_tipo_viagem;
+	}
+
+	public void setPrdv_tipo_viagem(Character prdv_tipo_viagem) {
+		this.prdv_tipo_viagem = prdv_tipo_viagem;
+	}
+
+	public Date getData_saida() {
+		return data_saida;
+	}
+
+	public void setData_saida(Date data_saida) {
+		this.data_saida = data_saida;
+	}
+
+	public Date getData_retorno() {
+		return data_retorno;
+	}
+
+	public void setData_retorno(Date data_retorno) {
+		this.data_retorno = data_retorno;
+	}
+
+	public String getJustificativaViagem() {
+		return justificativaViagem;
+	}
+
+	public void setJustificativaViagem(String justificativaViagem) {
+		this.justificativaViagem = justificativaViagem;
+	}
+
+	public BigDecimal getValorTransporte() {
+		return valorTransporte;
+	}
+
+	public void setValorTransporte(BigDecimal valorTransporte) {
+		this.valorTransporte = valorTransporte;
+	}
+
+	public BigDecimal getValorPassagemAerea() {
+		return valorPassagemAerea;
+	}
+
+	public void setValorPassagemAerea(BigDecimal valorPassagemAerea) {
+		this.valorPassagemAerea = valorPassagemAerea;
+	}
+
+	public BigDecimal getValorHospedagem() {
+		return valorHospedagem;
+	}
+
+	public void setValorHospedagem(BigDecimal valorHospedagem) {
+		this.valorHospedagem = valorHospedagem;
+	}
+
+	public BigDecimal getValorOutros() {
+		return valorOutros;
+	}
+
+	public void setValorOutros(BigDecimal valorOutros) {
+		this.valorOutros = valorOutros;
+	}
+
+	public Cidade getCidadeOrigem() {
+		return cidadeOrigem;
+	}
+
+	public void setCidadeOrigem(Cidade cidadeOrigem) {
+		this.cidadeOrigem = cidadeOrigem;
+	}
+
+	public Cidade getCidadeDestino() {
+		return cidadeDestino;
+	}
+
+	public void setCidadeDestino(Cidade cidadeDestino) {
+		this.cidadeDestino = cidadeDestino;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	
 }

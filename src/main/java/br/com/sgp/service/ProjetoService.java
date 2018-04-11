@@ -106,7 +106,7 @@ public class ProjetoService {
 	}
 
 	public List<Projeto> getTodos() {
-		List<Projeto> list = projetoRepository.findAll();
+		List<Projeto> list = projetoRepository.getTodos();
 
 		for (Projeto projeto : list) {
 			projeto.setCusto(getCusto(projeto));

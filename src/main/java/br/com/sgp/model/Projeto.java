@@ -2,14 +2,20 @@ package br.com.sgp.model;
 
 import javax.persistence.*;
 
+import org.junit.Test;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import br.com.sgp.util.SqlType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -92,6 +98,9 @@ public class Projeto implements Serializable {
 
 	@Transient
 	private BigDecimal custo;
+
+	@Transient
+	private String cronograma;
 
 	public Projeto() {
 	}
@@ -264,8 +273,6 @@ public class Projeto implements Serializable {
 		this.atividades = atividades;
 	}
 
-
-
 	/**
 	 * Metodo para pegar todos tipos de dispendios dos dispendios do projeto
 	 * 
@@ -292,7 +299,26 @@ public class Projeto implements Serializable {
 		this.dispendios = dispendios;
 	}
 
-
-
 	
+	public String getCronograma() {
+
+		if (getProjDataFinal()==null || getProjDataInicial()==null) {
+			return "sem data definida";
+		}
+		long inicio = getProjDataInicial().getTime(), fim = getProjDataFinal().getTime(),
+				hoje = Calendar.getInstance().getTimeInMillis();
+
+		BigDecimal time = new BigDecimal(inicio - fim), passed = new BigDecimal(inicio-hoje);
+
+		
+		Float current =  time.divide(passed,MathContext.DECIMAL32).floatValue() *100;
+		
+		DecimalFormat formatter = new DecimalFormat("#.##");
+		return current > 100 ? "100" : formatter.format(current) + "";
+	}
+
+	public void setCronograma(String cronograma) {
+		this.cronograma = cronograma;
+	}
+
 }
