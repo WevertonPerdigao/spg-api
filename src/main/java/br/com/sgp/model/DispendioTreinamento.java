@@ -2,6 +2,8 @@ package br.com.sgp.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-@Getter
-@Setter
 /**
  * @author weverton.perdigao
  */
@@ -23,10 +23,12 @@ public class DispendioTreinamento extends Dispendio implements Serializable {
 	 */
 	private static final long serialVersionUID = 6946366741648890204L;
 
+	@JsonProperty(required = true)
 	@Basic(optional = false)
 	@Column(name = "prdt_ementa")
-	private String prdtEmenta;
+	private String ementa;
 
+	@JsonProperty(required = true)
 	@Basic(optional = false)
 	@Column(name = "prdt_data_inicial")
 	@Temporal(TemporalType.DATE)
@@ -39,25 +41,14 @@ public class DispendioTreinamento extends Dispendio implements Serializable {
 	@Column(name = "prdt_instrutor")
 	private String instrutor;
 
-	@OneToMany(mappedBy="treinamento")	
-	private Set<Membro> participantes;
+	
+	@OneToMany(cascade = CascadeType.DETACH)
+	@JoinTable(name = "projeto_dispendio_treinamento_participante", joinColumns = {
+			@JoinColumn(name = "participantes_prdt_id", referencedColumnName = "prdi_id") }, //
+			inverseJoinColumns = { @JoinColumn(name = "participantes_func_id", referencedColumnName = "func_id") })
+	private Set<Funcionario> participantes;
 
 	public DispendioTreinamento() {
-	}
-
-	public String getPrdtEmenta() {
-		return prdtEmenta;
-	}
-
-	public void setPrdtEmenta(String prdtEmenta) {
-		this.prdtEmenta = prdtEmenta;
-	}
-
-	@Column(name = "prdt_id")
-	@Override
-	public Integer getId() {
-
-		return super.getId();
 	}
 
 	public Date getDataInicio() {
@@ -84,14 +75,20 @@ public class DispendioTreinamento extends Dispendio implements Serializable {
 		this.instrutor = instrutor;
 	}
 
-	public Set<Membro> getParticipantes() {
+	public String getEmenta() {
+		return ementa;
+	}
+
+	public void setEmenta(String ementa) {
+		this.ementa = ementa;
+	}
+
+	public Set<Funcionario> getParticipantes() {
 		return participantes;
 	}
 
-	public void setParticipantes(Set<Membro> participantes) {
+	public void setParticipantes(Set<Funcionario> participantes) {
 		this.participantes = participantes;
 	}
 
-
-	
 }

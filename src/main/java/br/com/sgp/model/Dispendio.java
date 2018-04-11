@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import br.com.sgp.util.SqlType;
 
@@ -32,6 +34,7 @@ public class Dispendio implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	
 	@Basic(optional = false)
 	@Column(name = "prdi_titulo_fatura")
 	private String tituloFatura;
@@ -39,6 +42,8 @@ public class Dispendio implements Serializable {
 	@Column(name = "prdi_descricao")
 	private String descricao;
 
+	
+	@JsonProperty(required=true)
 	@Basic(optional = false)
 	@Column(name = "prdi_justificativa")
 	private String justificativa;
@@ -46,6 +51,7 @@ public class Dispendio implements Serializable {
 	@Column(name = "prdi_cnpj")
 	private String cnpj;
 
+	
 	@Column(name = "prdi_data_nota_fiscal")
 	@Temporal(TemporalType.DATE)
 	private Date dataNotaFiscal;
@@ -53,10 +59,12 @@ public class Dispendio implements Serializable {
 	@Column(name = "prdi_nota_fiscal")
 	private String notaFiscal;
 
+	
 	@Column(name = "prdi_data_pagamento")
 	@Temporal(TemporalType.DATE)
 	private Date dataPagamento;
 
+	@JsonProperty(required=true)
 	@Basic(optional = false)
 	@Column(name = "prdi_valor",columnDefinition=SqlType.MONEY)
 	private BigDecimal valor;
@@ -64,10 +72,12 @@ public class Dispendio implements Serializable {
 	@ManyToOne
 	private DispendioAnexo anexo;
 	
+	@JsonProperty(required=true,access=Access.WRITE_ONLY)	
 	@JoinColumn(name = "prdi_proj_id", referencedColumnName = "proj_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Projeto projeto;
 
+	@JsonProperty(required=true)
 	@JoinColumn(name = "prdi_tidi_id", referencedColumnName = "tidi_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoDispendio tipo;

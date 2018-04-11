@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface ProjetoRepository extends JpaRepository<Projeto,Integer> {
 
-    @Query("SELECT p FROM Projeto as p join p.equipe k  where k.funcId = :funcId")
+    @Query("SELECT p FROM Projeto as p join p.equipe k join fetch p.atividades where k.funcId = :funcId")
     List<Projeto> listByFuncionarioId(@Param("funcId") Integer id);
     
     

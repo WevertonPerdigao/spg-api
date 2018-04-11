@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,61 +20,70 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
-@Table(name="projeto_atividade")
-public class Atividade implements Serializable{
-	
+@Table(name = "projeto_atividade")
+public class Atividade implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5265149857548385862L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="prat_id")
-	private Integer id;	
-	
-	@Column(name="prat_nome")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "prat_id")
+	private Integer id;
+
+	@Column(name = "prat_nome")
 	private String nome;
-	@Column(name="prat_descricao")
+
+	@Column(name = "prat_descricao")
 	private String descricao;
-	
-	
-	
+
+	@JsonBackReference("projeto")
 	@ManyToOne
-	@JoinColumn(name="prat_proj_id")
+	@JoinColumn(name = "prat_proj_id")
 	private Projeto projeto;
-	
+
 	@ManyToOne
-	@JoinColumn(name="prat_tiat_id")
+	@JoinColumn(name = "prat_tiat_id")
 	private TipoAtividade tipo;
-	
+
 	@Temporal(TemporalType.DATE)
-	@JoinColumn(name="prat_data_inicial")
+	@Column(name = "prat_data_inicial")
 	private Date data_inicial;
 
 	@Temporal(TemporalType.DATE)
-	@JoinColumn(name="prat_data_final")
+	@Column(name = "prat_data_final")
 	private Date data_final;
-	
 
-	
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="prat_pai_id",referencedColumnName="prat_id")
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "prat_pai_id", referencedColumnName = "prat_id")
 	private Atividade atividadePai;
-	
-	@JsonBackReference("atividadePai")
-	@OneToMany(mappedBy="atividadePai")
+
+	@OneToMany(mappedBy = "atividadePai")
 	private Set<Atividade> atividades;
-	
-	
-	@Column(name="prat_ordem_atividade")
+
+	@ManyToMany(targetEntity = Funcionario.class,cascade= CascadeType.PERSIST)
+	@JoinTable(name = "projeto_atividade_membro", joinColumns = {
+			@JoinColumn(name = "pame_prat_id", referencedColumnName = "prat_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "pame_func_id", referencedColumnName = "func_id") })
+	private Set<Funcionario> membros;
+
+	@Column(name = "prat_ordem_atividade")
 	private Integer ordem;
-	
-	@Column(name="prat_dependente")
+
+	@Column(name = "prat_dependente")
 	private boolean dependente;
 
 	public Integer getId() {
@@ -162,7 +173,5 @@ public class Atividade implements Serializable{
 	public void setAtividades(Set<Atividade> atividades) {
 		this.atividades = atividades;
 	}
-	
 
-	
 }

@@ -2,22 +2,26 @@ package br.com.sgp.service;
 
 import br.com.sgp.model.Arquivo;
 import br.com.sgp.model.Atividade;
+import br.com.sgp.model.Dispendio;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
 import br.com.sgp.model.TermoAditivo;
+import br.com.sgp.model.TipoDispendio;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.repository.ArquivoRepository;
 import br.com.sgp.repository.AtividadeRepository;
+import br.com.sgp.repository.DispendioRepository;
 import br.com.sgp.repository.ProjetoRepository;
 import br.com.sgp.repository.SituacaoProjetoRepository;
+import br.com.sgp.repository.TipoDispendioRepository;
 import br.com.sgp.repository.TipoProjetoRepository;
 import br.com.sgp.util.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,8 +31,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,23 +66,29 @@ public class ProjetoService {
 	@Autowired
 	ArquivoRepository arquivoRepository;
 
-	
 	@Autowired
 	AtividadeRepository atividadeRepository;
+
+	@Autowired
+	TipoDispendioRepository tipoDispendioRepository;
 	
+	@Autowired
+	DispendioRepository dispendioRepository;
+
 	@PersistenceContext
 	private EntityManager em;
 
-	public Projeto findByProjId(Integer projId) {		
-		
+	public Projeto findByProjId(Integer projId) {
+
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Projeto> query = builder.createQuery(Projeto.class);
 		Root<Projeto> root = query.from(Projeto.class);
-		root.fetch("atividades",JoinType.LEFT);
+		root.fetch("atividades", JoinType.LEFT);
 		
-		query.distinct(true).select(root).where(builder.equal(root.get("projId"), projId));		
+
+		query.distinct(true).select(root).where(builder.equal(root.get("projId"), projId));
 		TypedQuery<Projeto> typed = em.createQuery(query);
-		
+
 		return typed.getSingleResult();
 	}
 
@@ -91,18 +103,16 @@ public class ProjetoService {
 		return list;
 	}
 
-	
-	
-	public List<Projeto> getTodos(){
+	public List<Projeto> getTodos() {
 		List<Projeto> list = projetoRepository.findAll();
 
 		for (Projeto projeto : list) {
 			projeto.setCusto(getCusto(projeto));
 		}
 
-		return list;		
+		return list;
 	}
-	
+
 	/**
 	 * Metodo para pegar o custo do projeto
 	 */
@@ -271,21 +281,81 @@ public class ProjetoService {
 		return typedquery.getSingleResult().getEquipe();
 	}
 
-	public List<Atividade> getTodasAtividades(Integer id) throws Exception{
+	public List<Atividade> getTodasAtividades(Integer id) throws Exception {
 
 		Projeto p = projetoRepository.getOne(id);
 		List<Atividade> list = p.getAtividades();
-		if (p == null || list ==null) {
+		if (p == null || list == null) {
 			throw new NullPointerException("Nenhum projeto ou atividade encontrada");
 		}
-		
 
 		return list;
 	}
 
-	public void addAtividade(Integer id, Atividade entity) {
-		Projeto p = projetoRepository.getOne(id);
-		entity.setProjeto(p);
+	public void addAtividade(Atividade entity) {
+		
 		atividadeRepository.save(entity);
+	}
+
+	public List<TipoDispendio> getAllTipoDispendio() {
+		return tipoDispendioRepository.findAll();
+	}
+
+	public List<Map<String, ?>> getAllTipoDispendioResumo(Integer projetoId) {
+
+		
+		List<Map<String, ?>> list = new ArrayList<>();
+	
+		
+		Projeto p = projetoRepository.getOne(projetoId);
+		
+		List<TipoDispendio> tipos = p.tiposDispendios();
+		
+		for (TipoDispendio tipoDispendio : tipos) {
+			
+			Map<String, Object> map = new HashMap<>();
+			float sum = 0;
+
+			for (Dispendio d : p.getDispendios()) {
+				if (d.getTipo().getTidiId().equals(tipoDispendio.getTidiId())) {
+					sum+=d.getValor().floatValue();
+				}
+			}
+			
+			map.put("tidiId", tipoDispendio.getTidiId());
+			map.put("tidiNome", tipoDispendio.getTidiNome());
+			map.put("total", ""+sum);
+			list.add(map);
+
+		}
+
+		return list;
+	}
+
+	public List<Dispendio> getDispencios(Integer projetctId, Integer tipo) {
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Dispendio> query = builder.createQuery(Dispendio.class);
+		
+		Root<Dispendio> root = query.from(Dispendio.class);
+		query.select(root);
+		
+		query.distinct(true).where(builder.equal(root.get("projeto").get("projId"),projetctId),builder.equal(root.get("tipo").get("tidiId"), tipo));
+		
+		TypedQuery<Dispendio> typed = em.createQuery(query);		
+		
+		return typed.getResultList();
+	}
+
+	public Set<Dispendio> getDispencios(Integer projetctId) {
+
+		Projeto p = projetoRepository.getOne(projetctId);
+		
+		return p.getDispendios();
+	}
+
+	public void addDispendio(Dispendio entity) {		
+		dispendioRepository.save(entity);		
 	}
 }

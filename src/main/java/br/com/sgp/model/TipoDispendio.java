@@ -58,9 +58,18 @@ public class TipoDispendio implements Serializable {
             return false;
         }
         TipoDispendio other = (TipoDispendio) object;
-        if ((this.tidiId == null && other.tidiId != null) || (this.tidiId != null && !this.tidiId.equals(other.tidiId))) {
-            return false;
-        }
+        
+        
+        
+        return equals(other);
+        
+    }
+    
+    
+    public boolean equals(TipoDispendio t) {    	
+    	if (t.getTidiId()==null || !t.getTidiId().equals(getTidiId())) {
+			return false;
+		}
         return true;
     }
 

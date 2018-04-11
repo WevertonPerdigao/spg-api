@@ -103,15 +103,8 @@ public class Funcionario implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Unidade funcUnidId;
 
-//	@ManyToMany(targetEntity = DispendioTreinamento.class,fetch = FetchType.LAZY)
-////	@JoinTable(name = "projeto_dispendio_treinamento_participante", joinColumns = {
-////			@JoinColumn(name = "participantes_func_id", referencedColumnName = "func_id", table = "Funcionario") },//
-////			inverseJoinColumns = {
-////					@JoinColumn(name = "prdt_id", referencedColumnName = "participantes_prdt_id") }
-////	//
-////	)
-//
-//	private Set<DispendioTreinamento> treinamentos;
+	
+
 
 	public Funcionario() {
 	}
@@ -262,6 +255,9 @@ public class Funcionario implements Serializable {
 		this.funcUnidId = funcUnidId;
 	}
 
+	
+	
+	
 //	public Set<DispendioTreinamento> getTreinamentos() {
 //		return treinamentos;
 //	}

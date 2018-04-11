@@ -2,9 +2,13 @@ package br.com.sgp.controller;
 
 import br.com.sgp.model.Arquivo;
 import br.com.sgp.model.Atividade;
+import br.com.sgp.model.Dispendio;
+import br.com.sgp.model.DispendioTreinamento;
+import br.com.sgp.model.DispendioViagem;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
+import br.com.sgp.model.TipoDispendio;
 import br.com.sgp.model.TipoProjeto;
 import br.com.sgp.service.ProjetoService;
 import br.com.sgp.util.Constants;
@@ -27,12 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
 import java.io.IOException;
 
 import java.util.List;
-
 
 import javax.websocket.server.PathParam;
 
@@ -40,14 +41,13 @@ import javax.websocket.server.PathParam;
 @RequestMapping("projetos")
 public class ProjetoController {
 
-	
 	@Autowired
 	ProjetoService projetoService;
 
 	@GetMapping
 	public ResponseEntity<?> listAllProjetos() {
 
-		try {			
+		try {
 			return ResponseEntity.ok().body(projetoService.getTodos());
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e);
@@ -79,8 +79,8 @@ public class ProjetoController {
 		}
 	}
 
-	@PostMapping(value = "/salvar", consumes = { 
-			MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@PostMapping(value = "/salvar", consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<?> salvar(@RequestBody Projeto entity) {
 
 		try {
@@ -114,9 +114,9 @@ public class ProjetoController {
 				HttpStatus.OK);
 	}
 
-	
-	@PostMapping(value ="uploadtermo",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) // //new annotation since 4.3
-	public ResponseEntity<?> uploudTermo(@RequestHeader String termoid,@RequestParam("file") MultipartFile file) {
+	@PostMapping(value = "uploadtermo", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }) // //new annotation since
+																							// 4.3
+	public ResponseEntity<?> uploudTermo(@RequestHeader String termoid, @RequestParam("file") MultipartFile file) {
 
 		if (file.isEmpty()) {
 			return new ResponseEntity(HttpStatus.GONE);// 410
@@ -124,8 +124,7 @@ public class ProjetoController {
 
 		try {
 
-			
-			return new ResponseEntity(projetoService.salvarTermoArquivo(termoid,file), HttpStatus.OK);
+			return new ResponseEntity(projetoService.salvarTermoArquivo(termoid, file), HttpStatus.OK);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -133,54 +132,108 @@ public class ProjetoController {
 		}
 
 	}
-	
+
 	@PostMapping(value = "addmembro/{id}")
 	public ResponseEntity<?> addMembros(@PathVariable("id") Integer id, @RequestBody List<Funcionario> list) {
 
 		try {
-			return new ResponseEntity(projetoService.addMembros(id,list),HttpStatus.OK);	
+			return new ResponseEntity(projetoService.addMembros(id, list), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity(e,HttpStatus.BAD_REQUEST);	
+			return new ResponseEntity(e, HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@GetMapping(value = "getmembros/{id}")
+	public @ResponseBody List<Funcionario> getMembros(@PathVariable String id) {
+
+		return projetoService.getAllMembros(id);
+	}
+
+	@GetMapping(value = "atividades/{id}")
+	public ResponseEntity<?> getTodasAtividades(@PathVariable("id") Integer id) {
+
+		try {
+			return new ResponseEntity(projetoService.getTodasAtividades(id), HttpStatus.OK);
+		} catch (Exception e) {
+
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping(value = "addatividade")
+	public ResponseEntity<?> addAtividade(@RequestBody Atividade entity) {
+
+		try {
+			projetoService.addAtividade(entity);
+			return new ResponseEntity(entity, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Problema ao salvar", HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@GetMapping(value = "tipodispendios")
+	public ResponseEntity<?> getTipoDispendio(@RequestParam(required = false) Integer projetoId) {
+
+		if (projetoId != null) {
+			return new ResponseEntity(projetoService.getAllTipoDispendioResumo(projetoId), HttpStatus.OK);
+		} else
+			return new ResponseEntity(projetoService.getAllTipoDispendio(), HttpStatus.OK);
+	}
+	
+	/**
+	 * Metodo para listar dispendios
+	 * 
+	 * @param projetctId codigo do projeto
+	 * @param tipo codigo do tipo
+	 * @return
+	 */
+	@GetMapping(value = "dispendios/{id}")
+	public ResponseEntity<?> getDispendios(@PathVariable("id") Integer projetctId,@RequestParam(required=false) Integer tipo) {
+		
+		if (tipo!=null) {
+			return new ResponseEntity(projetoService.getDispencios(projetctId,tipo),HttpStatus.OK);
+		}
+		else		
+		{
+			return new ResponseEntity(projetoService.getDispencios(projetctId),HttpStatus.OK);
+		}
+	}
+
+	@PostMapping(value = "adddispendio")
+	public ResponseEntity<?> addDispendio(@RequestBody Dispendio entity) {
+		
+		try {
+			projetoService.addDispendio(entity);
+			return new ResponseEntity(entity,HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}		
+		
+	}
+	
+	
+	@PostMapping(value = "adddispendio/treinamento")
+	public ResponseEntity<?> addDispendio(@RequestBody DispendioTreinamento entity) {		
+		try {
+			projetoService.addDispendio(entity);
+			return new ResponseEntity(entity,HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	@PostMapping(value = "adddispendio/viagem")
+	public ResponseEntity<?> addDispendio(@RequestBody DispendioViagem entity) {		
+		try {
+			projetoService.addDispendio(entity);
+			return new ResponseEntity(entity,HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}		
 		
 	}
 
-	
-	@GetMapping(value = "getmembros/{id}")
-	public @ResponseBody List<Funcionario> getMembros(@PathVariable String id) {
-		
-		return projetoService.getAllMembros(id);
-	}
-	
-	@GetMapping(value = "atividades/{id}")
-	public ResponseEntity<?> getMethodName(@PathVariable("id") Integer id) {
-		
-		try {
-			return new ResponseEntity(projetoService.getTodasAtividades(id),HttpStatus.OK);
-		} catch (Exception e) {
-		
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@PostMapping(value = "addatividade/{id}")
-	public ResponseEntity<?> addAtividade(@PathParam("id") Integer id, @RequestBody Atividade entity) {
-		
-		try {
-			projetoService.addAtividade(id,entity);
-			return new ResponseEntity<>(entity,HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity("Problema ao salvar",HttpStatus.BAD_REQUEST);
-		}
-		
-	}
 
-
-//	@GetMapping(value = "dispendios")
-//	public @ResponseBody List getMethodName(@RequestParam String param) {
-//		return new SomeData();
-//	}
-
-	
-	
 }

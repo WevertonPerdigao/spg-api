@@ -34,7 +34,7 @@ public class Projeto implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "proj_nome")
 	private String projNome;
-	
+
 	@Basic(optional = false)
 	@Column(name = "proj_descricao")
 	private String projDescricao;
@@ -48,7 +48,7 @@ public class Projeto implements Serializable {
 	private Date projDataFinal;
 
 	@Basic(optional = false)
-	@Column(name = "proj_valor",columnDefinition=SqlType.MONEY)
+	@Column(name = "proj_valor", columnDefinition = SqlType.MONEY)
 	private BigDecimal projValor;
 
 	@JoinColumn(name = "proj_empr_id", referencedColumnName = "empr_id")
@@ -75,23 +75,19 @@ public class Projeto implements Serializable {
 					@JoinColumn(name = "prti_tipr_id", referencedColumnName = "tipr_id") }) //
 	private List<TipoProjeto> projTipos;
 
-	@ManyToMany
-	@JoinTable(name = "projeto_equipe",// 
-		joinColumns = {@JoinColumn(name = "preq_proj_id")},
-		inverseJoinColumns= {@JoinColumn(name = "preq_func_id")})
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "projeto_equipe", //
+			joinColumns = { @JoinColumn(name = "preq_proj_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "preq_func_id") })
 	private List<Funcionario> equipe;
 
-	
-	@JsonBackReference("projeto")
-	@OneToMany(mappedBy="projeto")
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
 	private List<Atividade> atividades;
-	
-	
 
-	@JsonBackReference("projeto")
-	@OneToMany(mappedBy="projeto")
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
+	// @JoinTable(name="projeto_dispendio",joinColumns = {@JoinColumn()})
 	private Set<Dispendio> dispendios;
-	
+
 	@Transient
 	private BigDecimal custo;
 
@@ -112,6 +108,11 @@ public class Projeto implements Serializable {
 			return false;
 		}
 		Projeto other = (Projeto) object;
+		return equals(other);
+	}
+
+	public boolean equals(Projeto object) {
+		Projeto other = object;
 		if ((this.projId == null && other.projId != null)
 				|| (this.projId != null && !this.projId.equals(other.projId))) {
 			return false;
@@ -228,15 +229,15 @@ public class Projeto implements Serializable {
 		this.equipe = equipe;
 	}
 
-	
 	/**
 	 * sincroniza a lista de membros da equipe do projeto
+	 * 
 	 * @param list
 	 */
 	public void addMembro(List<Funcionario> list) {
-		if (equipe==null) {
+		if (equipe == null) {
 			equipe = new ArrayList<>(list);
-		}else {
+		} else {
 			List<Funcionario> userRemovidos = new ArrayList<>();
 			for (Funcionario funcionario : equipe) {
 				if (!list.contains(funcionario)) {
@@ -244,7 +245,7 @@ public class Projeto implements Serializable {
 				}
 			}
 			equipe.removeAll(userRemovidos);
-			
+
 			for (Funcionario funcionario : list) {
 				if (!equipe.contains(funcionario)) {
 					equipe.add(funcionario);
@@ -269,7 +270,22 @@ public class Projeto implements Serializable {
 		this.dispendios = dispendios;
 	}
 
-	
-	
-	
+	/**
+	 * Metodo para pegar todos tipos de dispendios dos dispendios do projeto
+	 * 
+	 * @return
+	 */
+	public List<TipoDispendio> tiposDispendios() {
+		List<TipoDispendio> list = new ArrayList<>();
+		if (getDispendios() != null) {
+			for (Dispendio d : getDispendios()) {
+				if (!list.contains(d.getTipo())) {
+					list.add(d.getTipo());
+				}
+			}
+		}
+
+		return list;
+	}
+
 }
