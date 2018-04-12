@@ -29,48 +29,52 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Dispendio implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4643411758248460453L;
 
 	@Id
-	@Column(name="prdi_id")
+	@Column(name="prdiId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty("prdi_id")
+	@JsonProperty("prdiId")
 	private Integer id;
 	
-	@JsonProperty("prdi_titulo_fatura")
+	@JsonProperty("prdiTituloFatura")
 	@Basic(optional = false)
 	@Column(name = "prdi_titulo_fatura")
 	private String titulo_fatura;
 
-	@JsonProperty(required=true,value="prdi_descricao")	
+	@JsonProperty(required=true,value="prdiDescricao")	
 	@Column(name = "prdi_descricao")
 	private String descricao;
 
 	
-	@JsonProperty(required=true,value="prdi_justificativa")
+	@JsonProperty(required=true,value="prdiJustificativa")
 	@Basic(optional = false)
 	@Column(name = "prdi_justificativa")
 	private String justificativa;
 
-	@JsonProperty(required=true,value="prdi_cnpj")
+	@JsonProperty(required=true,value="prdiCnpj")
 	@Column(name = "prdi_cnpj")
 	private String cnpj;
 
-	@JsonProperty(required=true,value="prdi_data_nota_fiscal")
+	@JsonProperty(required=true,value="prdiDataNotaFiscal")
 	@Column(name = "prdi_data_nota_fiscal")
 	@Temporal(TemporalType.DATE)
 	private Date data_nota_fiscal;
 
-	@JsonProperty(required=true,value="prdi_nota_fiscal")
+	@JsonProperty(required=true,value="prdiNotaFiscal")
 	@Column(name = "prdi_nota_fiscal")
 	private String prdi_nota_fiscal;
 
-	@JsonProperty(required=true,value="prdi_data_pagamento")
+	@JsonProperty(required=true,value="prdiDataPagamento")
 	@Column(name = "prdi_data_pagamento")
 	@Temporal(TemporalType.DATE)
 	private Date data_pagamento;
 
-	@JsonProperty(required=true,value="prdi_valor")
+	@JsonProperty(required=true,value="prdiValor")
 	@Basic(optional = false)
 	@Column(name = "prdi_valor",columnDefinition=SqlType.MONEY)
 	private BigDecimal valor;
@@ -78,16 +82,22 @@ public class Dispendio implements Serializable {
 	@ManyToOne
 	private DispendioAnexo anexo;
 	
-	@JsonProperty(required=true,access=Access.WRITE_ONLY,value="prdi_proj_id")	
+	@JsonProperty(required=true,access=Access.WRITE_ONLY,value="prdiProjId")	
 	@JoinColumn(name = "prdi_proj_id", referencedColumnName = "proj_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Projeto projeto;
 
-	@JsonProperty(required=true, value="prdi_tidi_id")
+	@JsonProperty(required=true, value="prdiTidiId")
 	@JoinColumn(name = "prdi_tidi_id", referencedColumnName = "tidi_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoDispendio tipo;
 
+	
+	@JsonProperty("prdsPrdiId")
+	@OneToOne(mappedBy="dispendio")	
+	private StatusDispendio status;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -185,6 +195,13 @@ public class Dispendio implements Serializable {
 		this.tipo = tipo;
 	}
 
-	
+	public StatusDispendio getStatus() {
+		return status;
+	}
 
+	public void setStatus(StatusDispendio status) {
+		this.status = status;
+	}
+
+	
 }

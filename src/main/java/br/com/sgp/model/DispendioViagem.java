@@ -24,18 +24,18 @@ public class DispendioViagem extends Dispendio implements Serializable {
 
 	private static final long serialVersionUID = -4428232497739404426L;
 
-	@Column(name = "prdv_tipo_viagem")
+	@Column(name = "prdvTipoViagem")
 	private Character prdv_tipo_viagem;
 
 	@Basic(optional = false)
-	@JsonProperty(value="prdv_data_saida",required=true)
+	@JsonProperty(value="prdvDataSaida",required=true)
 	@Column(name = "prdv_data_saida")
 	@Temporal(TemporalType.DATE)
 	private Date data_saida;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_data_retorno")
+	@JsonProperty("prdvDataRetorno")
 	@Column(name = "prdv_data_retorno")
 	@Temporal(TemporalType.DATE)
 	private Date data_retorno;
@@ -43,49 +43,49 @@ public class DispendioViagem extends Dispendio implements Serializable {
 	@Getter
 	@Setter
 	@Basic(optional = false)
-	@JsonProperty("prdv_justificativa")
+	@JsonProperty("prdvJustificativa")
 	@Column(name = "prdv_justificativa")
 	private String justificativaViagem;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_valor_transporte")
+	@JsonProperty("prdvValorTransporte")
 	@Column(name = "prdv_valor_transporte")
 	private BigDecimal valorTransporte;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_valor_passagem_aerea")
+	@JsonProperty("prdvValorPassagemAerea")
 	@Column(name = "prdv_valor_passagem_aerea")
 	private BigDecimal valorPassagemAerea;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_valor_hospedagem")
+	@JsonProperty("prdvValorHospedagem")
 	@Column(name = "prdv_valor_hospedagem")
 	private BigDecimal valorHospedagem;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_valor_outros")
+	@JsonProperty("prdvValorOutros")
 	@Column(name = "prdv_valor_outros")
 	private BigDecimal valorOutros;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_cida_id_origem")
+	@JsonProperty("prdvCidaIdOrigem")
 	@JoinColumn(name = "prdv_cida_id_origem", referencedColumnName = "cida_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Cidade cidadeOrigem;
 
-	@JsonProperty("prdv_cida_id_destino")
+	@JsonProperty("prdvCidaIdDestino")
 	@JoinColumn(name = "prdv_cida_id_destino", referencedColumnName = "cida_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Cidade cidadeDestino;
 
 	@Getter
 	@Setter
-	@JsonProperty("prdv_func_id")
+	@JsonProperty("prdvFuncId")
 	@JoinColumn(name = "prdv_func_id", referencedColumnName = "func_id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	private Funcionario funcionario;
