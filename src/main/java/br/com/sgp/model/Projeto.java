@@ -2,7 +2,7 @@ package br.com.sgp.model;
 
 import javax.persistence.*;
 
-import org.junit.Test;
+//import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
