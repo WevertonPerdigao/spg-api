@@ -92,6 +92,10 @@ public class Dispendio implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoDispendio tipo;
 
+	@JsonProperty("prdiFuncId")
+	@ManyToOne
+	@JoinColumn(name="prdi_func_id",referencedColumnName = "func_id")
+	private Funcionario funcionario;
 	
 	@JsonProperty("prdsPrdiId")
 	@OneToOne(mappedBy="dispendio")	
@@ -201,6 +205,14 @@ public class Dispendio implements Serializable {
 
 	public void setStatus(StatusDispendio status) {
 		this.status = status;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 	

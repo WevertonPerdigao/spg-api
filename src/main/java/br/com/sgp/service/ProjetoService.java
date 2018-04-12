@@ -97,7 +97,9 @@ public class ProjetoService {
 		query.distinct(true).select(root).where(builder.equal(root.get("projId"), projId));
 		TypedQuery<Projeto> typed = em.createQuery(query);
 
-		return typed.getSingleResult();
+		Projeto proj = typed.getSingleResult();
+		proj.setCusto(getCusto(proj));
+		return proj;
 	}
 
 	public synchronized List<Projeto> listByFuncionarioId(Integer funcId) {
