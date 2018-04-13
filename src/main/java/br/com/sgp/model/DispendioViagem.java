@@ -24,7 +24,8 @@ public class DispendioViagem extends Dispendio implements Serializable {
 
 	private static final long serialVersionUID = -4428232497739404426L;
 
-	@Column(name = "prdvTipoViagem")
+	@JsonProperty("prdvTipoViagem")
+	@Column(name = "prdv_tipo_viagem")
 	private Character prdv_tipo_viagem;
 
 	@Basic(optional = false)

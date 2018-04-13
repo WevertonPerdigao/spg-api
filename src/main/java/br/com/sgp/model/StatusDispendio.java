@@ -25,13 +25,13 @@ public class StatusDispendio implements Serializable {
 	 */
 	private static final long serialVersionUID = -8371789174197923617L;
 
-	@JsonProperty("prds_prdi_id")
+	@JsonProperty("prdsPrdiId")
 	@Id
 	@OneToOne
 	@JoinColumn(name = "prds_prdi_id", table = "projeto_dispendio_status")
 	private Dispendio dispendio;
 
-	@JsonProperty("prds_prdi_id")
+	@JsonProperty("prdsPrdiStatus")
 	@Column(name = "prds_status")
 	@Enumerated(EnumType.ORDINAL)
 	private StatusAprovacao status;
@@ -41,7 +41,7 @@ public class StatusDispendio implements Serializable {
 	@JoinColumn(name = "prds_func_id", table = "projeto_dispendio_status")
 	private Funcionario funcionario;
 
-	@JsonProperty("prds_justificativa")
+	@JsonProperty("prdsJustificativa")
 	private String prds_justificativa;
 
 	@JsonProperty("prds_data")

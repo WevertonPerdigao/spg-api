@@ -183,81 +183,78 @@ public class ProjetoController {
 		} else
 			return new ResponseEntity(projetoService.getAllTipoDispendio(), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Metodo para listar dispendios
 	 * 
-	 * @param projetctId codigo do projeto
-	 * @param tipo codigo do tipo
+	 * @param projetctId
+	 *            codigo do projeto
+	 * @param tipo
+	 *            codigo do tipo
 	 * @return
 	 */
 	@GetMapping(value = "dispendios/{id}")
-	public ResponseEntity<?> getDispendios(@PathVariable("id") Integer projetctId,@RequestParam(required=false) Integer tipo) {
-		
-		if (tipo!=null) {
-			return new ResponseEntity(projetoService.getDispencios(projetctId,tipo),HttpStatus.OK);
-		}
-		else		
-		{
-			return new ResponseEntity(projetoService.getDispencios(projetctId),HttpStatus.OK);
-		}
+	public ResponseEntity<?> getDispendios(@PathVariable("id") Integer projetctId,
+			@RequestParam(required = false) Integer tipo, @RequestParam(required = false) String status) {
+
+		return new ResponseEntity(projetoService.getDispencios(projetctId, tipo, status), HttpStatus.OK);
+
 	}
 
+	
+	@CrossOrigin(origins= {"*"})
 	@PostMapping(value = "adddispendio")
 	public ResponseEntity<?> addDispendio(@RequestBody Dispendio entity) {
-		
+
 		try {
 			projetoService.addDispendio(entity);
-			return new ResponseEntity(entity,HttpStatus.OK);
+			return new ResponseEntity(entity, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}		
-		
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
-	
-	
+
 	@PostMapping(value = "adddispendio/treinamento")
-	public ResponseEntity<?> addDispendio(@RequestBody DispendioTreinamento entity) {		
+	public ResponseEntity<?> addDispendio(@RequestBody DispendioTreinamento entity) {
 		try {
 			projetoService.addDispendio(entity);
-			return new ResponseEntity(entity,HttpStatus.OK);
+			return new ResponseEntity(entity, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@PostMapping(value = "adddispendio/viagem")
-	public ResponseEntity<?> addDispendio(@RequestBody DispendioViagem entity) {		
+	public ResponseEntity<?> addDispendio(@RequestBody DispendioViagem entity) {
 		try {
 			projetoService.addDispendio(entity);
-			return new ResponseEntity(entity,HttpStatus.OK);
+			return new ResponseEntity(entity, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}		
-		
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
-
-	
 	@PostMapping(value = "dispendio/addanexo")
 	public @ResponseBody DispendioAnexo postMethodName(@RequestBody DispendioAnexo entity) {
-		
+
 		projetoService.addDispendioAnexo(entity);
-		
+
 		return entity;
 	}
 
-	@PostMapping(value = "addanexodispendio/{id}",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<?> addAnexoDispendio(@PathVariable("id") Integer id,@RequestParam("file") MultipartFile file) {
-		
+	@PostMapping(value = "addanexodispendio/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<?> addAnexoDispendio(@PathVariable("id") Integer id,
+			@RequestParam("file") MultipartFile file) {
+
 		try {
-			projetoService.addAnexoDispendio(id,file);	
-		}catch (Exception e) {
-			
-		}		
-		
+			projetoService.addAnexoDispendio(id, file);
+		} catch (Exception e) {
+
+		}
+
 		return null;
 	}
-
 
 }

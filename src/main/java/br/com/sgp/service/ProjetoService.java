@@ -7,6 +7,8 @@ import br.com.sgp.model.DispendioAnexo;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Projeto;
 import br.com.sgp.model.SituacaoProjeto;
+import br.com.sgp.model.StatusAprovacao;
+import br.com.sgp.model.StatusDispendio;
 import br.com.sgp.model.TermoAditivo;
 import br.com.sgp.model.TipoDispendio;
 import br.com.sgp.model.TipoProjeto;
@@ -51,11 +53,13 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 @Service
 public class ProjetoService {
@@ -328,7 +332,7 @@ public class ProjetoService {
 		return list;
 	}
 
-	public List<Dispendio> getDispencios(Integer projetctId, Integer tipo) {
+	public List<Dispendio> getDispencios(Integer projetctId, Integer tipo,String status) {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -337,8 +341,28 @@ public class ProjetoService {
 		Root<Dispendio> root = query.from(Dispendio.class);
 		query.select(root);
 
-		query.distinct(true).where(builder.equal(root.get("prdi_proj_id").get("projId"), projetctId),
-				builder.equal(root.get("tipo").get("tidiId"), tipo));
+		
+		List<Predicate> predic = new ArrayList<>();
+		predic.add(builder.equal(root.get("projeto").get("projId"),projetctId));
+		if (tipo!=null) {
+			predic.add(builder.equal(root.get("tipo").get("tidiId"), tipo));
+		}
+		if (status!=null) {
+			if (status.toLowerCase().equals(StatusAprovacao.APROVADO.name().toLowerCase())) {
+				predic.add(builder.equal(root.get("status").get("status"), StatusAprovacao.APROVADO));
+			}else if (status.toLowerCase().equals(StatusAprovacao.RECUSADO.name().toLowerCase())) {
+				predic.add(builder.equal(root.get("status").get("status"), StatusAprovacao.RECUSADO));
+			}else {
+				Subquery<StatusDispendio> sub = query.subquery(StatusDispendio.class);
+				Root<StatusDispendio> subroot = sub.from(StatusDispendio.class);
+				sub.select(subroot);
+				
+//				sub.where(builder.equal(subroot.get("dispendio"),root));
+				predic.add(builder.isTrue(root.get("status").in(sub)));
+			}
+			
+		}
+		query.distinct(true).where(predic.toArray(new Predicate[predic.size()]));
 
 		TypedQuery<Dispendio> typed = em.createQuery(query);
 

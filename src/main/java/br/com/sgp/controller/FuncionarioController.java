@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/funcionarios")
@@ -72,6 +73,9 @@ public class FuncionarioController {
 	@PostMapping(value = "salvar")
 	public ResponseEntity<?> salvarFuncionario(@RequestBody Funcionario entity) {
 		try {
+			if (funcionarioService.findByEmail(entity.getFuncEmail())!=null) {
+				return new ResponseEntity("E-mail ja cadastrado",HttpStatus.NOT_ACCEPTABLE);//406	
+			}
 			funcionarioService.salvar(entity);
 			if (entity.getFuncSenha() == null) {
 				return new ResponseEntity("Não pode salvar senha em branco", HttpStatus.BAD_REQUEST);
@@ -143,6 +147,22 @@ public class FuncionarioController {
 
 		funcionarioService.salvar(entity);
 
+		return entity;
+	}
+
+	@PostMapping(value = "savelist")
+	public Set<Funcionario> saveList(@RequestBody Set<Funcionario> entity) {
+		
+		Setor s = getAllSetors().get(0);
+		Funcao funcao = getAllFuncao().get(0);
+		
+		for (Funcionario funcionario : entity) {
+			funcionario.setFuncSetoId(s);
+			funcionario.setFuncFuncId(funcao);
+			salvarFuncionario(funcionario);
+		}
+		
+		
 		return entity;
 	}
 

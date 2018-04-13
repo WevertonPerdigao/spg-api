@@ -98,7 +98,7 @@ public class Dispendio implements Serializable {
 	private Funcionario funcionario;
 	
 	@JsonProperty("prdsPrdiId")
-	@OneToOne(mappedBy="dispendio")	
+	@OneToOne(mappedBy="dispendio",cascade = {CascadeType.ALL})	
 	private StatusDispendio status;
 	
 	
