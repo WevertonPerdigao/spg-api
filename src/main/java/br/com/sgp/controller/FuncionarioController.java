@@ -89,8 +89,8 @@ public class FuncionarioController {
 	}
 
 	@GetMapping(value = "perfil")
-	public @ResponseBody List<Perfil> getAllPerfil() {
-		return funcionarioService.getAllPerfil();
+	public @ResponseBody List<Perfil> getAllPerfil(@RequestParam(required = false) String text) {
+		return funcionarioService.getAllPerfil(text);
 	}
 
 	/**

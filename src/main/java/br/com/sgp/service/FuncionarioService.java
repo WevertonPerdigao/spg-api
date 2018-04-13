@@ -120,8 +120,10 @@ public class FuncionarioService {
 		return setorRepository.findAll();
 	}
 
-	public List<Perfil> getAllPerfil() {
-
+	public List<Perfil> getAllPerfil(String text) {
+		if (text!=null) {
+			return perfilRepository.findLike(text);
+		}
 		return perfilRepository.findAll();
 	}
 
