@@ -5,10 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.sgp.util.SqlType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * @author weverton.perdigao
@@ -51,6 +54,11 @@ public class Perfil implements Serializable {
     @Column(name = "perf_acesso_completo")
     private Boolean perfAcessoCompleto;
 
+    @JsonBackReference("perfil")
+    @OneToMany(mappedBy = "perfil")
+    private Set<Funcionario> funcionarios;
+    
+    
     public Perfil() {
     }
 
@@ -134,6 +142,14 @@ public class Perfil implements Serializable {
 
 	public void setPerfAcessoCompleto(Boolean perfAcessoCompleto) {
 		this.perfAcessoCompleto = perfAcessoCompleto;
+	}
+
+	public Set<Funcionario> getFuncionarios() {
+		return funcionarios;
+	}
+
+	public void setFuncionarios(Set<Funcionario> funcionarios) {
+		this.funcionarios = funcionarios;
 	}
     
     

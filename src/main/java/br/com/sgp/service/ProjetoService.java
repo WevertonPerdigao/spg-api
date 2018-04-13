@@ -83,7 +83,7 @@ public class ProjetoService {
 
 	@Autowired
 	DispendioAnexoRepository dispendioAnexoRepository;
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -224,7 +224,6 @@ public class ProjetoService {
 
 		Arquivo v = getArquivo(Constants.getFolderAnexoTermo(), file);
 
-
 		arquivoRepository.save(v);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<TermoAditivo> query = builder.createQuery(TermoAditivo.class);
@@ -361,11 +360,11 @@ public class ProjetoService {
 	public void addAnexoDispendio(Integer id, MultipartFile file) {
 		try {
 			Arquivo arquivo = getArquivo(Constants.getFolderAnexoDispendio(), file);
-			DispendioAnexo anexo = dispendioRepository.getAnexo(id);			
+			DispendioAnexo anexo = dispendioRepository.getAnexo(id);
 			anexo.setAnexo(arquivo);
-//			dispendioRepository.save(anexo)			
-			
-		} catch (IOException e) {		
+			// dispendioRepository.save(anexo)
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

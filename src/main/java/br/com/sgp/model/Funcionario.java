@@ -89,9 +89,7 @@ public class Funcionario implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Setor funcSetoId;
 
-	@JoinColumn(name = "func_perf_id", referencedColumnName = "perf_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Perfil funcPerfId;
+	
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JoinColumn(name = "func_stfu_id", referencedColumnName = "stfu_id")
@@ -103,8 +101,10 @@ public class Funcionario implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Unidade funcUnidId;
 
-	
-
+	@JsonProperty("funcPerfId")
+	@ManyToOne
+	@JoinColumn(name="func_perf_id")
+	private Perfil perfil;
 
 	public Funcionario() {
 	}
@@ -231,12 +231,13 @@ public class Funcionario implements Serializable {
 		this.funcSetoId = funcSetoId;
 	}
 
-	public Perfil getFuncPerfId() {
-		return funcPerfId;
+
+	public Perfil getPerfil() {
+		return perfil;
 	}
 
-	public void setFuncPerfId(Perfil funcPerfId) {
-		this.funcPerfId = funcPerfId;
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 
 	public StatusFuncionario getFuncStfuId() {
@@ -257,14 +258,5 @@ public class Funcionario implements Serializable {
 
 	
 	
-	
-//	public Set<DispendioTreinamento> getTreinamentos() {
-//		return treinamentos;
-//	}
-//
-//	public void setTreinamentos(Set<DispendioTreinamento> treinamentos) {
-//		this.treinamentos = treinamentos;
-//	}
-
 	
 }

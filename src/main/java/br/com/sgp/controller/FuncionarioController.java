@@ -5,6 +5,7 @@ import br.com.sgp.model.Funcao;
 import br.com.sgp.model.Funcionario;
 import br.com.sgp.model.Login;
 import br.com.sgp.model.Perfil;
+import br.com.sgp.model.Provisao;
 import br.com.sgp.model.Setor;
 import br.com.sgp.model.StatusFuncionario;
 import br.com.sgp.model.Unidade;
@@ -38,7 +39,7 @@ public class FuncionarioController {
 		Funcionario funcionario = funcionarioService.findByMatriculaAndSenha(login.getEmail(), login.getSenha());
 		if (funcionario != null) {
 
-			if (encoder.matches(login.getSenha(),funcionario.getFuncSenha())) {
+			if (encoder.matches(login.getSenha(), funcionario.getFuncSenha())) {
 				return new ResponseEntity<Funcionario>(funcionario, HttpStatus.OK); // retorno 200
 			} else
 				return new ResponseEntity("Senha incorreta", HttpStatus.FORBIDDEN); // retorn 403
@@ -58,30 +59,30 @@ public class FuncionarioController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> listAllFuncionarios() {
+	public ResponseEntity<?> listAllFuncionarios(@RequestParam(required = false) String nome,
+			@RequestParam(required = false) String email) {
 		try {
-			List<Funcionario> listFuncionario = funcionarioService.listAll();
+			List<Funcionario> listFuncionario = funcionarioService.listAll(nome,email);
 			return ResponseEntity.ok().body(listFuncionario);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e);
 		}
 	}
-	
-	
+
 	@PostMapping(value = "salvar")
-	public ResponseEntity<?> postMethodName(@RequestBody Funcionario entity) {
-		try {			
+	public ResponseEntity<?> salvarFuncionario(@RequestBody Funcionario entity) {
+		try {
 			funcionarioService.salvar(entity);
-			if (entity.getFuncSenha()==null) {
-				return new ResponseEntity("Não pode salvar senha em branco",HttpStatus.BAD_REQUEST);	
+			if (entity.getFuncSenha() == null) {
+				return new ResponseEntity("Não pode salvar senha em branco", HttpStatus.BAD_REQUEST);
 			}
-			return new ResponseEntity<Funcionario>(entity,HttpStatus.OK);
+			return new ResponseEntity<Funcionario>(entity, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity("Erro ao salvar",HttpStatus.BAD_REQUEST);	
-		}		
+			return new ResponseEntity("Erro ao salvar", HttpStatus.BAD_REQUEST);
+		}
 	}
-	
+
 	@GetMapping(value = "setor")
 	public @ResponseBody List<Setor> getAllSetors() {
 		return funcionarioService.getAllSetor();
@@ -91,26 +92,60 @@ public class FuncionarioController {
 	public @ResponseBody List<Perfil> getAllPerfil() {
 		return funcionarioService.getAllPerfil();
 	}
-	
+
+	/**
+	 * Metodo para listar todos perfis do funcionario
+	 * 
+	 * @param id
+	 *            do funcionario
+	 * @return Lista de perfil do funcionario
+	 */
+	@GetMapping(value = "perfil/{id}")
+	public @ResponseBody Perfil getPerfilFuncionario(@PathVariable("id") Integer id) {
+		return funcionarioService.getPerfilFuncionario(id);
+	}
+
 	@GetMapping(value = "funcao")
 	public @ResponseBody List<Funcao> getAllFuncao() {
 		return funcionarioService.getAllFuncao();
 	}
-	
+
 	@GetMapping(value = "cargo")
 	public @ResponseBody List<Cargo> getAllCargo() {
 		return funcionarioService.getAllCargo();
 	}
-	
+
 	@GetMapping(value = "unidade")
 	public @ResponseBody List<Unidade> getAllUnicade() {
 		return funcionarioService.getAllUnidade();
 	}
-	
+
 	@GetMapping(value = "status")
 	public @ResponseBody List<StatusFuncionario> getAllStatus() {
 		return funcionarioService.getallStatus();
 	}
 
+	/**
+	 * 
+	 * Metodo para retornar todas provisoes do funcionario
+	 * 
+	 * @param codigo
+	 *            do funcionario
+	 * @return lista de provisoes do usuario
+	 */
+	@GetMapping(value = "provisao/{id}")
+	public @ResponseBody List<Provisao> getProvisoes(@PathVariable("id") Integer codigo) {
+		return funcionarioService.getProvisoes(codigo);
+	}
+
+	@PostMapping(value = "provisao/add")
+	public @ResponseBody Provisao addProvisao(@RequestBody Provisao entity) {
+
+		funcionarioService.salvar(entity);
+
+		return entity;
+	}
+
+	
 
 }
